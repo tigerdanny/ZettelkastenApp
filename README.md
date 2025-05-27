@@ -6,6 +6,8 @@
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-blue.svg)](https://kotlinlang.org)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-tigerdanny%2FZettelkastenApp-blue.svg)](https://github.com/tigerdanny/ZettelkastenApp)
+[![Stars](https://img.shields.io/github/stars/tigerdanny/ZettelkastenApp?style=social)](https://github.com/tigerdanny/ZettelkastenApp/stargazers)
 
 一個基於卡片盒筆記法（Zettelkasten）理念的現代化Android筆記應用，幫助您構建個人知識網絡。
 
@@ -130,8 +132,8 @@ app/src/main/
 
 1. **克隆項目**
    ```bash
-   git clone https://github.com/your-username/zettelkasten-android.git
-   cd zettelkasten-android
+   git clone https://github.com/tigerdanny/ZettelkastenApp.git
+   cd ZettelkastenApp
    ```
 
 2. **開發工具要求**
