@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Zettelkasten Notes</string>
+    <string name="label_cards">My Cards</string>
+    <string name="label_tags">Tags</string>
+    <string name="label_writing">Write</string>
+    <string name="label_settings">Settings</string>
+    <string name="label_statistics">Statistics</string>
+    <string name="label_search">Search</string>
+    <string name="hint_search">Search cards or tags...</string>
+    <string name="title_card_detail">Card Details</string>
+    <string name="title_edit_card">Edit Card</string>
+    <string name="title_create_card">New Card</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_delete">Delete</string>
+    <string name="hint_card_title">Title</string>
+    <string name="hint_card_content">Content</string>
+    <string name="hint_card_tags">Tags (comma separated)</string>
+    <string name="hint_card_links">Links (#ID1, #ID2)</string>
+    <string name="btn_biometric_auth">Use Biometric Auth</string>
+</resources> 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 應用名稱保持原樣 -->
+    <!-- <string name="app_name">Zettelkasten Notes</string> -->
+    <string name="app_description">隨時紀錄你的想法</string>
+    
+    <!-- UI 標籤 -->
+    <string name="label_cards">我的卡片</string>
+    <string name="label_tags">標籤</string>
+    <string name="label_writing">寫作</string>
+    <string name="label_settings">設置</string>
+    <string name="label_statistics">統計</string>
+    <string name="label_search">搜索</string>
+    <string name="hint_search">搜索卡片或標籤...</string>
+    <string name="title_card_detail">卡片詳情</string>
+    <string name="title_edit_card">編輯卡片</string>
+    <string name="title_create_card">新建卡片</string>
+    <string name="btn_save">保存</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_delete">刪除</string>
+    <string name="hint_card_title">標題</string>
+    <string name="hint_card_content">內容</string>
+    <string name="hint_card_tags">標籤（用逗號分隔）</string>
+    <string name="btn_biometric_auth">使用生物識別</string>
+    
+    <!-- 首頁 -->
+    <string name="quick_stats">快速統計</string>
+    <string name="recent_cards">最近卡片</string>
+    <string name="card_count_label">卡片</string>
+    <string name="tag_count_label">標籤</string>
+    
+    <!-- 選單項目 -->
+    <string name="menu_home">首頁</string>
+    <string name="menu_all_cards">所有卡片</string>
+    <string name="menu_tags">標籤</string>
+    <string name="menu_search">搜索</string>
+    <string name="menu_statistics">統計</string>
+    <string name="menu_settings">設置</string>
+    <string name="menu_about">關於</string>
+    <string name="menu_other">其他</string>
+    
+    <!-- 操作標籤 -->
+    <string name="add_new_card">添加新卡片</string>
+    <string name="search">搜索</string>
+    <string name="save">保存</string>
+    <string name="delete">刪除</string>
+    <string name="edit">編輯</string>
+    <string name="cancel">取消</string>
+    
+    <!-- 卡片相關 -->
+    <string name="card_title">標題</string>
+    <string name="card_content">內容</string>
+    <string name="card_tags">標籤</string>
+    <string name="card_created">創建時間: %1$s</string>
+    <string name="card_modified">修改時間: %1$s</string>
+    
+    <!-- 訊息 -->
+    <string name="card_saved">卡片已保存</string>
+    <string name="card_deleted">卡片已刪除</string>
+    <string name="confirm_delete">你確定要刪除這張卡片嗎？</string>
+    <string name="no_cards_found">沒有找到卡片</string>
+</resources> 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 米黃色圓角背景 -->
+    <path
+        android:fillColor="#FFF8DC"
+        android:pathData="M0,0h108v108h-108z" />
+    <!-- 紙張紋理 - 輕微的米黃色紋理效果 -->
+    <path
+        android:fillColor="#F5EED5"
+        android:pathData="M0,36C12,36 12,32 24,32C36,32 36,36 48,36C60,36 60,32 72,32C84,32 84,36 96,36C108,36 108,32 120,32M0,64C12,64 12,60 24,60C36,60 36,64 48,64C60,64 60,60 72,60C84,60 84,64 96,64C108,64 108,60 120,60M0,92C12,92 12,88 24,88C36,88 36,92 48,92C60,92 60,88 72,88C84,88 84,92 96,92C108,92 108,88 120,88"
+        android:strokeWidth="0.5"
+        android:strokeColor="#E6DFC3"
+        android:strokeLineCap="round" />
+</vector> 

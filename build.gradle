@@ -1,0 +1,61 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext {
+        kotlin_version = '1.9.22'
+        room_version = '2.6.1'
+        nav_version = '2.7.6'
+        agp_version = '8.10.0'
+    }
+    // Buildscript still needs repositories
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$agp_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+// Repositories are now declared in settings.gradle (dependencyResolutionManagement block)
+
+// 設置所有項目使用相同的JVM目標版本
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
+            // 為Kotlin編譯器添加JVM參數
+            freeCompilerArgs += [
+                "-Xjvm-default=all"
+            ]
+        }
+    }
+    
+    // 使用JDK 17
+    tasks.withType(JavaCompile).configureEach {
+        options.fork = true
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+// 清除緩存任務
+tasks.register('cleanCache', Delete) {
+    description = "Delete all Gradle and build caches"
+    delete "${rootDir}/build"
+    subprojects.each { sub ->
+        delete "${sub.projectDir}/build"
+    }
+    delete "${System.getProperty('user.home')}/.android/build-cache"
+    delete "${System.getProperty('user.home')}/.gradle/caches"
+    delete "${rootDir}/.gradle"
+}
+
+tasks.register('clean', Delete) {
+    delete rootProject.buildDir
+} 

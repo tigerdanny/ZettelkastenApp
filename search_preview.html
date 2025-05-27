@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zettelkasten 搜尋頁面預覽 - 鍵盤適應性改進</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            scroll-behavior: smooth;
+        }
+
+        /* 搜尋容器 */
+        .search-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 16px;
+            padding: 8px;
+        }
+
+        .search-input {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 12px 16px;
+            font-size: 16px;
+            border-radius: 8px;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: #f8f9fa;
+        }
+
+        .search-input::placeholder {
+            color: #999;
+        }
+
+        /* 統計信息 */
+        .search-stats {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 12px;
+            display: none;
+        }
+
+        .stats-number {
+            color: #6200EE;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 0 4px;
+        }
+
+        .stats-text {
+            color: #666;
+        }
+
+        /* 篩選容器 */
+        .filter-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .filter-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            border-radius: 16px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .filter-chip:hover {
+            background: #f0f0f0;
+        }
+
+        .filter-chip.selected {
+            background: #6200EE;
+            color: white;
+            border-color: #6200EE;
+        }
+
+        /* 卡片堆疊容器 */
+        .search-results-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .card-stack {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: none;
+            overflow-y: auto;
+            cursor: pointer;
+        }
+
+        .card.active {
+            display: block;
+            z-index: 10;
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .card-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .card-tag {
+            background: #E3F2FD;
+            color: #1976D2;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .card-date {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* 導航箭頭 */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s ease;
+            z-index: 20;
+        }
+
+        .nav-arrow:hover {
+            background: rgba(0,0,0,0.7);
+        }
+
+        .nav-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-arrow.left {
+            left: 8px;
+        }
+
+        .nav-arrow.right {
+            right: 8px;
+        }
+
+        /* 位置指示器 */
+        .position-indicator {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            z-index: 20;
+        }
+
+        /* 空狀態 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            margin-top: 60px;
+        }
+
+        .empty-emoji {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .empty-subtitle {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* 高亮搜尋結果 */
+        .highlight {
+            background-color: #FFEB3B;
+            font-weight: bold;
+        }
+
+        /* 鍵盤模擬 */
+        .keyboard-simulator {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            background: #d1d5db;
+            transition: height 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .keyboard-simulator.active {
+            height: 200px;
+        }
+
+        .keyboard-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #6200EE;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 1001;
+        }
+
+        /* 響應式設計 - 鍵盤適應 */
+        .container.keyboard-active {
+            height: calc(100vh - 200px);
+        }
+
+        .container.keyboard-active .scroll-container {
+            padding-bottom: 20px;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 480px) {
+            .scroll-container {
+                padding: 12px;
+            }
+            
+            .filter-chips {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="keyboard-toggle" onclick="toggleKeyboard()">模擬鍵盤</button>
+    
+    <div class="container" id="container">
+        <div class="scroll-container" id="scrollContainer">
+            <!-- 搜尋容器 -->
+            <div class="search-container">
+                <input type="text" 
+                       class="search-input" 
+                       id="searchInput"
+                       placeholder="搜尋標籤或卡片內容..."
+                       oninput="onSearchChange()"
+                       onkeypress="onSearchKeypress(event)"
+                       onfocus="onSearchFocus()"
+                       onblur="onSearchBlur()">
+            </div>
+
+            <!-- 搜尋統計信息 -->
+            <div class="search-stats" id="searchStats">
+                <span class="stats-text">找到</span>
+                <span class="stats-number" id="resultsCount">0</span>
+                <span class="stats-text">張卡片</span>
+            </div>
+
+            <!-- 篩選容器 -->
+            <div class="filter-container">
+                <div class="filter-title">搜尋範圍</div>
+                <div class="filter-chips">
+                    <button class="filter-chip selected" data-filter="all" onclick="selectFilter(this, 'all')">全部</button>
+                    <button class="filter-chip" data-filter="title" onclick="selectFilter(this, 'title')">標題</button>
+                    <button class="filter-chip" data-filter="content" onclick="selectFilter(this, 'content')">內容</button>
+                    <button class="filter-chip" data-filter="tags" onclick="selectFilter(this, 'tags')">標籤</button>
+                </div>
+            </div>
+
+            <!-- 搜尋結果卡片堆疊區域 -->
+            <div class="search-results-container" id="searchResultsContainer">
+                <div class="card-stack" id="cardStack">
+                    <!-- 卡片將動態生成 -->
+                </div>
+                
+                <!-- 導航箭頭 -->
+                <button class="nav-arrow left" id="leftArrow" onclick="previousCard()">‹</button>
+                <button class="nav-arrow right" id="rightArrow" onclick="nextCard()">›</button>
+                
+                <!-- 位置指示器 -->
+                <div class="position-indicator" id="positionIndicator">
+                    <span id="currentPosition">1</span> / <span id="totalResults">1</span>
+                </div>
+            </div>
+
+            <!-- 初始狀態 -->
+            <div class="empty-state" id="initialState">
+                <div class="empty-emoji">🔍</div>
+                <div class="empty-title">開始搜尋</div>
+                <div class="empty-subtitle">在上方輸入關鍵字以搜尋卡片</div>
+            </div>
+
+            <!-- 無搜尋結果狀態 -->
+            <div class="empty-state hidden" id="noResultsState">
+                <div class="empty-emoji">📭</div>
+                <div class="empty-title">沒有找到結果</div>
+                <div class="empty-subtitle">嘗試使用不同的關鍵字或篩選條件</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 鍵盤模擬器 -->
+    <div class="keyboard-simulator" id="keyboardSimulator">
+        <span>模擬輸入法界面</span>
+    </div>
+
+    <script>
+        // 示例卡片數據
+        const cardsData = [
+            { id: 1, title: '創新思維方法', content: '思考問題時要跳出固有框架，嘗試從不同角度來解決問題。可以使用思維導圖或者六頂思考帽等方法來激發創意思維。', tags: ['想法', '創新', '思維'], date: '2024/01/15' },
+            { id: 2, title: 'React Hook 學習筆記', content: 'useState 和 useEffect 的使用技巧和注意事項，以及如何優化組件性能，避免不必要的重新渲染。', tags: ['學習', 'React', '前端'], date: '2024/01/14' },
+            { id: 3, title: '工作計劃安排', content: '本週完成了用戶登錄模塊，下週計劃實現用戶資料管理功能，包括頭像上傳和個人信息編輯。', tags: ['工作', '計劃', '開發'], date: '2024/01/13' },
+            { id: 4, title: 'Kotlin 協程詳解', content: '協程的基本概念和在 Android 開發中的應用，如何處理異步操作和避免回調地獄問題。', tags: ['學習', 'Kotlin', 'Android'], date: '2024/01/12' },
+            { id: 5, title: '產品設計想法', content: '用戶界面可以更簡潔，添加快捷操作按鈕，提升用戶體驗。考慮使用更直觀的圖標和色彩搭配。', tags: ['想法', '產品', '設計'], date: '2024/01/11' },
+            { id: 6, title: '閱讀心得分享', content: '最近讀了一本關於時間管理的書，學到了很多實用的技巧，特別是番茄工作法和時間塊規劃。', tags: ['閱讀', '心得', '時間管理'], date: '2024/01/10' }
+        ];
+
+        let currentFilter = 'all';
+        let currentQuery = '';
+        let searchResults = [];
+        let currentCardIndex = 0;
+        let keyboardActive = false;
+
+        function toggleKeyboard() {
+            keyboardActive = !keyboardActive;
+            const keyboard = document.getElementById('keyboardSimulator');
+            const container = document.getElementById('container');
+            
+            if (keyboardActive) {
+                keyboard.classList.add('active');
+                container.classList.add('keyboard-active');
+            } else {
+                keyboard.classList.remove('active');
+                container.classList.remove('keyboard-active');
+            }
+        }
+
+        function onSearchFocus() {
+            // 當搜尋欄獲得焦點時，滾動到頂部
+            document.getElementById('scrollContainer').scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function onSearchBlur() {
+            // 當搜尋欄失去焦點時的處理
+        }
+
+        function onSearchChange() {
+            const input = document.getElementById('searchInput');
+            currentQuery = input.value.trim();
+            
+            if (currentQuery === '') {
+                showInitialState();
+            } else if (currentQuery.length >= 2) {
+                performSearch();
+            }
+        }
+
+        function onSearchKeypress(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+                // 模擬隱藏鍵盤
+                document.getElementById('searchInput').blur();
+            }
+        }
+
+        function selectFilter(button, filter) {
+            // 更新選中狀態
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('selected');
+            });
+            button.classList.add('selected');
+            
+            currentFilter = filter;
+            
+            // 如果有搜尋查詢，重新執行搜尋
+            if (currentQuery.length >= 2) {
+                performSearch();
+            }
+        }
+
+        function performSearch() {
+            if (currentQuery.length < 2) return;
+            
+            const query = currentQuery.toLowerCase();
+            
+            searchResults = cardsData.filter(card => {
+                switch (currentFilter) {
+                    case 'title':
+                        return card.title.toLowerCase().includes(query);
+                    case 'content':
+                        return card.content.toLowerCase().includes(query);
+                    case 'tags':
+                        return card.tags.some(tag => tag.toLowerCase().includes(query));
+                    default: // 'all'
+                        return card.title.toLowerCase().includes(query) ||
+                               card.content.toLowerCase().includes(query) ||
+                               card.tags.some(tag => tag.toLowerCase().includes(query));
+                }
+            });
+            
+            updateSearchResults();
+        }
+
+        function updateSearchResults() {
+            if (searchResults.length === 0) {
+                showNoResultsState();
+            } else {
+                showSearchResults();
+            }
+        }
+
+        function showInitialState() {
+            document.getElementById('initialState').classList.remove('hidden');
+            document.getElementById('noResultsState').classList.add('hidden');
+            document.getElementById('searchResultsContainer').style.display = 'none';
+            document.getElementById('searchStats').style.display = 'none';
+        }
+
+        function showNoResultsState() {
+            document.getElementById('initialState').classList.add('hidden');
+            document.getElementById('noResultsState').classList.remove('hidden');
+            document.getElementById('searchResultsContainer').style.display = 'none';
+            document.getElementById('searchStats').style.display = 'none';
+        }
+
+        function showSearchResults() {
+            document.getElementById('initialState').classList.add('hidden');
+            document.getElementById('noResultsState').classList.add('hidden');
+            document.getElementById('searchResultsContainer').style.display = 'block';
+            document.getElementById('searchStats').style.display = 'flex';
+            
+            // 更新統計信息
+            document.getElementById('resultsCount').textContent = searchResults.length;
+            
+            // 更新卡片顯示
+            currentCardIndex = 0;
+            renderCards();
+            updateNavigation();
+        }
+
+        function renderCards() {
+            const cardStack = document.getElementById('cardStack');
+            cardStack.innerHTML = '';
+            
+            searchResults.forEach((card, index) => {
+                const cardElement = createCardElement(card, index);
+                cardStack.appendChild(cardElement);
+            });
+        }
+
+        function createCardElement(card, index) {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+            if (index === currentCardIndex) {
+                cardDiv.classList.add('active');
+            }
+            
+            // 高亮搜尋關鍵字
+            const highlightedTitle = highlightText(card.title, currentQuery);
+            const highlightedContent = highlightText(card.content, currentQuery);
+            
+            cardDiv.innerHTML = `
+                <div class="card-title">${highlightedTitle}</div>
+                <div class="card-content">${highlightedContent}</div>
+                <div class="card-tags">
+                    ${card.tags.map(tag => `<span class="card-tag">${highlightText(tag, currentQuery)}</span>`).join('')}
+                </div>
+                <div class="card-date">${card.date}</div>
+            `;
+            
+            return cardDiv;
+        }
+
+        function highlightText(text, query) {
+            if (!query) return text;
+            
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        function updateNavigation() {
+            const leftArrow = document.getElementById('leftArrow');
+            const rightArrow = document.getElementById('rightArrow');
+            const positionIndicator = document.getElementById('positionIndicator');
+            
+            if (searchResults.length <= 1) {
+                leftArrow.style.display = 'none';
+                rightArrow.style.display = 'none';
+                positionIndicator.style.display = 'none';
+                return;
+            }
+            
+            leftArrow.style.display = 'flex';
+            rightArrow.style.display = 'flex';
+            positionIndicator.style.display = 'block';
+            
+            leftArrow.classList.toggle('disabled', currentCardIndex === 0);
+            rightArrow.classList.toggle('disabled', currentCardIndex === searchResults.length - 1);
+            
+            document.getElementById('currentPosition').textContent = currentCardIndex + 1;
+            document.getElementById('totalResults').textContent = searchResults.length;
+        }
+
+        function showCard(index) {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, i) => {
+                card.classList.toggle('active', i === index);
+            });
+            currentCardIndex = index;
+            updateNavigation();
+        }
+
+        function previousCard() {
+            if (currentCardIndex > 0) {
+                showCard(currentCardIndex - 1);
+            }
+        }
+
+        function nextCard() {
+            if (currentCardIndex < searchResults.length - 1) {
+                showCard(currentCardIndex + 1);
+            }
+        }
+
+        // 示例搜尋
+        setTimeout(() => {
+            document.getElementById('searchInput').value = '學習';
+            onSearchChange();
+        }, 2000);
+    </script>
+</body>
+</html> 

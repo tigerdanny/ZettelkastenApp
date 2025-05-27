@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zettelkasten - Android APP 作品報告</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px 0;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .section {
+            padding: 40px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section h3 {
+            color: #444;
+            font-size: 1.8rem;
+            margin: 30px 0 20px 0;
+            padding-left: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .tech-item {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .layout-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .layout-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .layout-card:hover {
+            transform: scale(1.02);
+        }
+
+        .layout-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+
+        .layout-content {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .mockup {
+            background: #ffffff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .statistics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .developer-info {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            transition: background 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+
+        .navigation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: background 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: #f0f0f0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .navigation {
+                display: none;
+            }
+            
+            .layout-showcase {
+                grid-template-columns: 1fr;
+            }
+            
+            .badges {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            margin-top: 40px;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .scroll-top:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+        }
+
+        .architecture-diagram {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .layer {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .layer-title {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .phone-mockup {
+            background: #f0f0f0;
+            border: 3px solid #333;
+            border-radius: 25px;
+            padding: 20px;
+            margin: 20px auto;
+            text-align: center;
+            position: relative;
+            max-width: 300px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .phone-mockup::before {
+            content: "📱 界面預覽";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            color: #667eea;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            border: 2px solid #667eea;
+            font-size: 0.8rem;
+        }
+
+        .phone-screen {
+            background: #000;
+            border-radius: 20px;
+            padding: 25px 15px 15px 15px;
+            margin: 10px 0;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .phone-screen::before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: #666;
+            border-radius: 2px;
+        }
+
+        .status-bar {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .app-content {
+            background: white;
+            border-radius: 0 0 15px 15px;
+            padding: 15px;
+            min-height: 300px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navigation">
+        <a href="#overview" class="nav-item">📱 概覽</a>
+        <a href="#features" class="nav-item">✨ 功能</a>
+        <a href="#tech" class="nav-item">🏗️ 技術</a>
+        <a href="#layouts" class="nav-item">🎨 布局</a>
+        <a href="#stats" class="nav-item">📊 統計</a>
+        <a href="#developer" class="nav-item">👨‍💻 開發者</a>
+        <button onclick="exportToPowerPoint()" class="nav-item" style="background: #667eea; color: white; border: none; cursor: pointer; border-radius: 5px;">
+            📄 導出PPT
+        </button>
+    </nav>
+
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-brain"></i> Zettelkasten</h1>
+            <p class="subtitle">智能卡片筆記應用 - Android APP 作品報告</p>
+            <div class="badges">
+                <span class="badge"><i class="fab fa-android"></i> Android 6.0+</span>
+                <span class="badge"><i class="fas fa-code"></i> Kotlin 1.9.22</span>
+                <span class="badge"><i class="fas fa-database"></i> Room Database</span>
+                <span class="badge"><i class="fas fa-shield-alt"></i> 生物識別</span>
+                <span class="badge"><i class="fas fa-paint-brush"></i> Material Design</span>
+            </div>
+        </header>
+
+        <div class="content">
+            <section id="overview" class="section">
+                <h2><i class="fas fa-mobile-alt"></i> 項目概覽</h2>
+                
+                <p style="font-size: 1.2rem; margin-bottom: 30px; color: #666;">
+                    Zettelkasten是一個基於卡片盒筆記法理念的現代化Android應用，專為知識工作者設計，
+                    幫助用戶構建個人知識網絡，提高學習和創作效率。
+                </p>
+
+                <div class="statistics">
+                    <div class="stat-card">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">核心功能</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">主要頁面</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Kotlin開發</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">16</div>
+                        <div class="stat-label">布局文件</div>
+                    </div>
+                </div>
+
+                <div class="architecture-diagram">
+                    <h3>應用架構圖</h3>
+                    <div class="layer">
+                        <div class="layer-title">UI Layer (Presentation)</div>
+                        <p>Activities • Fragments • ViewModels • Adapters</p>
+                    </div>
+                    <div class="layer">
+                        <div class="layer-title">Domain Layer (Business Logic)</div>
+                        <p>Use Cases • Entities • Repository Interfaces</p>
+                    </div>
+                    <div class="layer">
+                        <div class="layer-title">Data Layer (Data Access)</div>
+                        <p>Room Database • DAOs • Data Sources • Repositories</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="features" class="section">
+                <h2><i class="fas fa-star"></i> 核心功能</h2>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-edit"></i> 智能筆記編輯</h4>
+                        <p>原子化卡片設計，每個卡片專注一個概念，支持富文本編輯和實時保存。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-tags"></i> 標籤管理系統</h4>
+                        <p>靈活的標籤分類，標籤雲視覺化展示，支持批量操作和快速篩選。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-search"></i> 全文搜索</h4>
+                        <p>強大的搜索功能，支持標題、內容、標籤搜索，智能建議和搜索歷史。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-link"></i> 卡片連結</h4>
+                        <p>建立卡片間的關聯，使用[[標題]]語法創建連結，形成知識網絡。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-chart-bar"></i> 數據統計</h4>
+                        <p>可視化統計圖表，追蹤寫作習慣，分析卡片和標籤使用模式。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-fingerprint"></i> 安全保護</h4>
+                        <p>密碼鎖定 + 生物識別雙重認證，本地加密存儲，保護隱私安全。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-moon"></i> 深色模式</h4>
+                        <p>護眼的深色主題，Material Design設計語言，流暢的動畫效果。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-mobile-alt"></i> 響應式設計</h4>
+                        <p>適配不同屏幕尺寸，現代化界面設計，優雅的用戶體驗。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tech" class="section">
+                <h2><i class="fas fa-cogs"></i> 技術架構</h2>
+                
+                <h3>核心技術棧</h3>
+                <div class="tech-stack">
+                    <div class="tech-item">
+                        <i class="fab fa-android"></i><br>
+                        Android Jetpack
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-code"></i><br>
+                        Kotlin 1.9.22
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-database"></i><br>
+                        Room Database
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-sync-alt"></i><br>
+                        Coroutines + Flow
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-paint-brush"></i><br>
+                        Material Design
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-shield-alt"></i><br>
+                        Biometric API
+                    </div>
+                </div>
+
+                <h3>項目依賴</h3>
+                <div class="code-block">
+// 核心框架
+Android Jetpack (Navigation, Lifecycle, ViewModel)
+Room Database 2.6.1
+Kotlin Coroutines 1.7.3
+
+// UI & UX
+Material Design Components 1.11.0
+ViewPager2 + Fragments
+Biometric Authentication 1.2.0
+
+// 數據可視化
+MPAndroidChart 3.1.0
+FlexboxLayout 3.0.0
+
+// 開發工具
+View Binding, Kotlin Kapt, Gradle 8.12
+                </div>
+
+                <h3>MVVM架構模式</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>View (UI Layer)</h4>
+                        <p>Activities、Fragments、Adapters負責用戶界面展示和交互</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>ViewModel</h4>
+                        <p>管理UI相關數據，處理業務邏輯，生命週期感知</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Model (Data Layer)</h4>
+                        <p>Room數據庫、Repository模式、數據源管理</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="layouts" class="section">
+                <h2><i class="fas fa-palette"></i> 布局設計展示</h2>
+                
+                <div class="layout-showcase">
+                    <div class="layout-card">
+                        <div class="layout-header">
+                            <i class="fas fa-home"></i> 主頁布局 (activity_main.xml)
+                        </div>
+                        <div class="layout-content">
+                            <div class="phone-mockup">
+                                <div class="phone-screen">
+                                    <div class="status-bar">
+                                        <span>9:41</span>
+                                        <span>🔋 100%</span>
+                                    </div>
+                                    <div class="app-content">
+                                        <div style="background: #667eea; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-bars"></i>
+                                            <span style="font-weight: bold;">Zettelkasten</span>
+                                            <div style="margin-left: auto;">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="color: #666; padding: 10px 0;">
+                                            <h4 style="color: #333; margin-bottom: 15px; font-size: 1rem;">我的卡片</h4>
+                                            
+                                            <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid #667eea;">
+                                                <strong style="color: #333; font-size: 0.9rem;">會議筆記</strong><br>
+                                                <span style="font-size: 0.8rem; color: #666;">今天的會議討論了項目進度...</span><br>
+                                                <span style="font-size: 0.7rem; color: #999;">2024-12-20</span>
+                                            </div>
+                                            
+                                            <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; border-left: 4px solid #764ba2;">
+                                                <strong style="color: #333; font-size: 0.9rem;">學習筆記</strong><br>
+                                                <span style="font-size: 0.8rem; color: #666;">關於Kotlin協程的理解...</span><br>
+                                                <span style="font-size: 0.7rem; color: #999;">2024-12-19</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="position: absolute; bottom: 20px; right: 20px;">
+                                            <div style="background: #667eea; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 0.8rem;">
+                                                <i class="fas fa-plus"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea;">
+                                <h4 style="color: #667eea; margin-bottom: 10px;">主要功能</h4>
+                                <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 0.9rem;">
+                                    <li>抽屜式導航設計</li>
+                                    <li>Fragment動態替換</li>
+                                    <li>浮動操作按鈕</li>
+                                    <li>Material Design風格</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layout-card">
+                        <div class="layout-header">
+                            <i class="fas fa-cards-blank"></i> 卡片編輯 (fragment_edit_card.xml)
+                        </div>
+                        <div class="layout-content">
+                            <div class="phone-mockup">
+                                <div class="phone-screen">
+                                    <div class="status-bar">
+                                        <span>9:41</span>
+                                        <span>🔋 100%</span>
+                                    </div>
+                                    <div class="app-content">
+                                        <div style="background: #667eea; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-arrow-left"></i>
+                                            <span style="font-weight: bold;">編輯卡片</span>
+                                            <div style="margin-left: auto;">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="color: #666; padding: 5px 0;">
+                                            <div style="border: 2px solid #667eea; border-radius: 8px; padding: 10px; margin-bottom: 12px; background: white;">
+                                                <label style="color: #667eea; font-size: 0.7rem; font-weight: bold;">標題</label><br>
+                                                <input type="text" value="會議筆記" style="border: none; outline: none; width: 100%; font-size: 0.9rem; background: transparent;" readonly>
+                                            </div>
+                                            
+                                            <div style="border: 2px solid #667eea; border-radius: 8px; padding: 10px; margin-bottom: 12px; background: white; min-height: 80px;">
+                                                <label style="color: #667eea; font-size: 0.7rem; font-weight: bold;">內容</label><br>
+                                                <textarea style="border: none; outline: none; width: 100%; height: 60px; resize: none; background: transparent; font-size: 0.8rem;" readonly>今天的會議討論了項目的下一步發展方向...</textarea>
+                                            </div>
+                                            
+                                            <div style="margin-bottom: 12px;">
+                                                <label style="color: #667eea; font-size: 0.7rem; font-weight: bold; margin-bottom: 6px; display: block;">標籤</label>
+                                                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span style="background: #667eea; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem;">#工作</span>
+                                                    <span style="background: #764ba2; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem;">#會議</span>
+                                                    <span style="background: #f0f0f0; color: #666; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; border: 1px dashed #ccc;">+ 新增</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div style="text-align: center; margin-top: 15px;">
+                                                <button style="background: #667eea; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 0.8rem;">保存卡片</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea;">
+                                <h4 style="color: #667eea; margin-bottom: 10px;">核心特色</h4>
+                                <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 0.9rem;">
+                                    <li>滾動式編輯界面</li>
+                                    <li>Material文本輸入框</li>
+                                    <li>標籤Chip組件</li>
+                                    <li>自動保存功能</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layout-card">
+                        <div class="layout-header">
+                            <i class="fas fa-search"></i> 搜索頁面 (fragment_search.xml)
+                        </div>
+                        <div class="layout-content">
+                            <div class="phone-mockup">
+                                <div class="phone-screen">
+                                    <div class="status-bar">
+                                        <span>9:41</span>
+                                        <span>🔋 100%</span>
+                                    </div>
+                                    <div class="app-content">
+                                        <div style="background: #667eea; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-arrow-left"></i>
+                                            <span style="font-weight: bold;">搜索</span>
+                                        </div>
+                                        
+                                        <div style="color: #666; padding: 5px 0;">
+                                            <div style="border: 2px solid #667eea; border-radius: 20px; padding: 8px 12px; margin-bottom: 12px; background: white; display: flex; align-items: center; gap: 8px;">
+                                                <i class="fas fa-search" style="color: #667eea; font-size: 0.8rem;"></i>
+                                                <input type="text" placeholder="搜索卡片..." style="border: none; outline: none; width: 100%; background: transparent; font-size: 0.8rem;" readonly>
+                                            </div>
+                                            
+                                            <div style="margin-bottom: 12px;">
+                                                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
+                                                    <span style="background: #667eea; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; display: flex; align-items: center; gap: 4px;">#工作 <i class="fas fa-times" style="font-size: 0.6rem;"></i></span>
+                                                    <span style="background: #764ba2; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; display: flex; align-items: center; gap: 4px;">#重要 <i class="fas fa-times" style="font-size: 0.6rem;"></i></span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div style="color: #333;">
+                                                <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid #667eea;">
+                                                    <strong style="color: #333; font-size: 0.8rem;">會議筆記</strong><br>
+                                                    <span style="font-size: 0.7rem; color: #666;">今天的<mark style="background: #ffeb3b; padding: 1px 2px;">會議</mark>討論了<mark style="background: #ffeb3b; padding: 1px 2px;">工作</mark>進度...</span><br>
+                                                    <div style="margin-top: 6px;">
+                                                        <span style="background: #667eea; color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.6rem; margin-right: 4px;">#工作</span>
+                                                        <span style="background: #764ba2; color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.6rem;">#重要</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; border-left: 4px solid #764ba2;">
+                                                    <strong style="color: #333; font-size: 0.8rem;">項目計劃</strong><br>
+                                                    <span style="font-size: 0.7rem; color: #666;">關於<mark style="background: #ffeb3b; padding: 1px 2px;">工作</mark>安排和時程規劃...</span><br>
+                                                    <div style="margin-top: 6px;">
+                                                        <span style="background: #667eea; color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.6rem; margin-right: 4px;">#工作</span>
+                                                        <span style="background: #28a745; color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.6rem;">#計劃</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea;">
+                                <h4 style="color: #667eea; margin-bottom: 10px;">搜索功能</h4>
+                                <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 0.9rem;">
+                                    <li>實時搜索建議</li>
+                                    <li>標籤組合篩選</li>
+                                    <li>搜索歷史記錄</li>
+                                    <li>結果高亮顯示</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layout-card">
+                        <div class="layout-header">
+                            <i class="fas fa-tags"></i> 標籤管理 (fragment_tags.xml)
+                        </div>
+                        <div class="layout-content">
+                            <div class="phone-mockup">
+                                <div class="phone-screen">
+                                    <div class="status-bar">
+                                        <span>9:41</span>
+                                        <span>🔋 100%</span>
+                                    </div>
+                                    <div class="app-content">
+                                        <div style="background: #667eea; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-tags"></i>
+                                            <span style="font-weight: bold;">標籤管理</span>
+                                        </div>
+                                        
+                                        <div style="background: #f8f9fa; border-radius: 8px; margin-bottom: 12px; overflow: hidden;">
+                                            <div style="display: flex; background: white;">
+                                                <div style="flex: 1; padding: 8px; text-align: center; background: #667eea; color: white; font-weight: bold; font-size: 0.8rem;">標籤列表</div>
+                                                <div style="flex: 1; padding: 8px; text-align: center; color: #667eea; font-weight: bold; font-size: 0.8rem;">標籤雲</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="text-align: center; color: #666; padding: 15px 5px;">
+                                            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 15px;">
+                                                <span style="background: #667eea; color: white; padding: 8px 12px; border-radius: 18px; font-size: 0.8rem; font-weight: bold;">#工作</span>
+                                                <span style="background: #764ba2; color: white; padding: 6px 10px; border-radius: 15px; font-size: 0.7rem;">#學習</span>
+                                                <span style="background: #28a745; color: white; padding: 5px 8px; border-radius: 12px; font-size: 0.6rem;">#重要</span>
+                                                <span style="background: #17a2b8; color: white; padding: 6px 10px; border-radius: 15px; font-size: 0.7rem;">#筆記</span>
+                                                <span style="background: #ffc107; color: #333; padding: 4px 7px; border-radius: 10px; font-size: 0.5rem;">#會議</span>
+                                                <span style="background: #dc3545; color: white; padding: 5px 8px; border-radius: 12px; font-size: 0.6rem;">#緊急</span>
+                                            </div>
+                                            
+                                            <div style="font-size: 0.7rem; color: #999; margin-top: 15px;">
+                                                標籤大小反映使用頻率
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="position: absolute; bottom: 20px; right: 20px;">
+                                            <div style="background: #667eea; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 0.8rem;">
+                                                <i class="fas fa-plus"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea;">
+                                <h4 style="color: #667eea; margin-bottom: 10px;">標籤特色</h4>
+                                <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 0.9rem;">
+                                    <li>雙視圖模式切換</li>
+                                    <li>標籤雲視覺化</li>
+                                    <li>批量編輯操作</li>
+                                    <li>使用頻率統計</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layout-card">
+                        <div class="layout-header">
+                            <i class="fas fa-chart-bar"></i> 統計分析 (fragment_statistics.xml)
+                        </div>
+                        <div class="layout-content">
+                            <div class="phone-mockup">
+                                <div class="phone-screen">
+                                    <div class="status-bar">
+                                        <span>9:41</span>
+                                        <span>🔋 100%</span>
+                                    </div>
+                                    <div class="app-content">
+                                        <div style="background: #667eea; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                            <i class="fas fa-chart-bar"></i>
+                                            <span style="font-weight: bold;">統計分析</span>
+                                        </div>
+                                        
+                                        <div style="color: #666; padding: 2px 0; overflow-y: auto; max-height: 280px;">
+                                            <!-- 總覽統計 -->
+                                            <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                                <h4 style="color: #333; margin-bottom: 8px; font-size: 0.8rem;">📊 總覽統計</h4>
+                                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: center;">
+                                                    <div>
+                                                        <div style="font-size: 1.2rem; font-weight: bold; color: #667eea;">125</div>
+                                                        <div style="font-size: 0.6rem;">總卡片數</div>
+                                                    </div>
+                                                    <div>
+                                                        <div style="font-size: 1.2rem; font-weight: bold; color: #764ba2;">35</div>
+                                                        <div style="font-size: 0.6rem;">標籤數</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- 寫作統計圖表 -->
+                                            <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                                <h4 style="color: #333; margin-bottom: 8px; font-size: 0.8rem;">📈 寫作趨勢</h4>
+                                                <div style="height: 60px; background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 6px; position: relative; overflow: hidden;">
+                                                    <div style="position: absolute; bottom: 0; left: 10%; width: 6px; height: 30%; background: rgba(255,255,255,0.8); border-radius: 1px;"></div>
+                                                    <div style="position: absolute; bottom: 0; left: 25%; width: 6px; height: 50%; background: rgba(255,255,255,0.8); border-radius: 1px;"></div>
+                                                    <div style="position: absolute; bottom: 0; left: 40%; width: 6px; height: 70%; background: rgba(255,255,255,0.8); border-radius: 1px;"></div>
+                                                    <div style="position: absolute; bottom: 0; left: 55%; width: 6px; height: 45%; background: rgba(255,255,255,0.8); border-radius: 1px;"></div>
+                                                    <div style="position: absolute; bottom: 0; left: 70%; width: 6px; height: 80%; background: rgba(255,255,255,0.8); border-radius: 1px;"></div>
+                                                    <div style="position: absolute; bottom: 3px; right: 8px; color: white; font-size: 0.6rem;">本週</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- 標籤分佈 -->
+                                            <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                                <h4 style="color: #333; margin-bottom: 8px; font-size: 0.8rem;">🥧 標籤分佈</h4>
+                                                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: conic-gradient(#667eea 0% 35%, #764ba2 35% 60%, #28a745 60% 80%, #ffc107 80% 100%); position: relative;">
+                                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: white; border-radius: 50%;"></div>
+                                                    </div>
+                                                    <div style="font-size: 0.6rem;">
+                                                        <div style="margin: 2px 0;"><span style="color: #667eea;">●</span> 工作 35%</div>
+                                                        <div style="margin: 2px 0;"><span style="color: #764ba2;">●</span> 學習 25%</div>
+                                                        <div style="margin: 2px 0;"><span style="color: #28a745;">●</span> 筆記 20%</div>
+                                                        <div style="margin: 2px 0;"><span style="color: #ffc107;">●</span> 其他 20%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea;">
+                                <h4 style="color: #667eea; margin-bottom: 10px;">統計內容</h4>
+                                <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 0.9rem;">
+                                    <li>總體數據概覽</li>
+                                    <li>時間序列圖表</li>
+                                    <li>餅圖分佈展示</li>
+                                    <li>趨勢分析可視化</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layout-card">
+                        <div class="layout-header">
+                            <i class="fas fa-lock"></i> 密碼鎖定 (activity_password_lock.xml)
+                        </div>
+                        <div class="layout-content">
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 2px solid #667eea;">
+                                <div style="margin-bottom: 20px;">
+                                    <div style="width: 60px; height: 60px; background: #667eea; border-radius: 15px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">🧠</div>
+                                    <h3 style="color: #333; margin-bottom: 8px;">Zettelkasten</h3>
+                                    <p style="color: #666; font-size: 0.9rem;">智能卡片筆記應用</p>
+                                </div>
+                                
+                                <div style="margin-bottom: 20px;">
+                                    <div style="width: 40px; height: 40px; background: #f0f0f0; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #666; font-size: 1.2rem; border: 2px solid #ddd;">🔒</div>
+                                    <p style="color: #666;">應用已鎖定</p>
+                                </div>
+                                
+                                <div style="margin-bottom: 15px;">
+                                    <input type="password" placeholder="輸入您的密碼" style="border: 2px solid #667eea; border-radius: 8px; padding: 10px; width: 200px; text-align: center;" readonly>
+                                </div>
+                                
+                                <button style="background: #667eea; color: white; border: none; padding: 10px 30px; border-radius: 20px; font-weight: bold; margin-bottom: 15px;">解鎖</button>
+                                
+                                <div>
+                                    <div style="width: 35px; height: 35px; background: #f8f9fa; border: 2px solid #667eea; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; color: #667eea; font-size: 1rem;">👆</div>
+                                    <p style="color: #666; font-size: 0.8rem;">或使用生物識別</p>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea;">
+                                <h4 style="color: #667eea; margin-bottom: 10px;">安全功能</h4>
+                                <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 0.9rem;">
+                                    <li>密碼保護界面</li>
+                                    <li>生物識別支持</li>
+                                    <li>自動鎖定機制</li>
+                                    <li>錯誤提示處理</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layout-card">
+                        <div class="layout-header">
+                            <i class="fas fa-cog"></i> 設置密碼對話框 (dialog_set_password.xml)
+                        </div>
+                        <div class="layout-content">
+                            <div style="text-align: center; padding: 20px;">
+                                <div style="background: white; border: 2px solid #667eea; border-radius: 15px; padding: 20px; max-width: 280px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                                    <h3 style="color: #333; margin-bottom: 10px; font-size: 1.1rem;">設置應用密碼</h3>
+                                    <p style="color: #666; font-size: 0.8rem; margin-bottom: 15px;">為了保護您的私人筆記，請設置一個密碼</p>
+                                    
+                                    <div style="margin-bottom: 12px;">
+                                        <input type="password" placeholder="輸入密碼" style="border: 2px solid #667eea; border-radius: 8px; padding: 8px; width: 100%; font-size: 0.9rem;" readonly>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 15px;">
+                                        <input type="password" placeholder="確認密碼" style="border: 2px solid #667eea; border-radius: 8px; padding: 8px; width: 100%; font-size: 0.9rem;" readonly>
+                                    </div>
+                                    
+                                    <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                        <button style="background: transparent; color: #667eea; border: 1px solid #667eea; padding: 8px 15px; border-radius: 15px; font-size: 0.8rem;">取消</button>
+                                        <button style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 15px; font-size: 0.8rem;">確認</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea;">
+                                <h4 style="color: #667eea; margin-bottom: 10px;">對話框特色</h4>
+                                <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 0.9rem;">
+                                    <li>Material對話框設計</li>
+                                    <li>密碼強度驗證</li>
+                                    <li>實時錯誤提示</li>
+                                    <li>直觀操作流程</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layout-card">
+                        <div class="layout-header">
+                            <i class="fas fa-layer-group"></i> 卡片項目布局 (item_card.xml)
+                        </div>
+                        <div class="layout-content">
+                            <div style="text-align: center; padding: 20px;">
+                                <div style="background: #f8f9fa; border: 2px solid #667eea; border-radius: 15px; padding: 15px; max-width: 280px; margin: 0 auto; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <div style="background: #667eea; color: white; padding: 8px; border-radius: 8px; margin-bottom: 12px; font-weight: bold; font-size: 0.9rem;">會議筆記</div>
+                                    <div style="font-size: 0.8rem; color: #666; margin-bottom: 8px; line-height: 1.4;">今天的會議討論了項目進度和下一步計劃，需要重點關注用戶體驗的優化...</div>
+                                    <div style="text-align: right; font-size: 0.7rem; color: #999; margin-bottom: 10px;">2024-12-20 14:30</div>
+                                    <div style="display: flex; gap: 5px;">
+                                        <span style="background: #667eea; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.6rem;">#工作</span>
+                                        <span style="background: #764ba2; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.6rem;">#會議</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #667eea;">
+                                <h4 style="color: #667eea; margin-bottom: 10px;">卡片設計</h4>
+                                <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 0.9rem;">
+                                    <li>Material卡片風格</li>
+                                    <li>內容預覽截取</li>
+                                    <li>時間戳顯示</li>
+                                    <li>標籤快速瀏覽</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="stats" class="section">
+                <h2><i class="fas fa-chart-pie"></i> 項目統計</h2>
+                
+                <div class="statistics">
+                    <div class="stat-card">
+                        <div class="stat-number">5,000+</div>
+                        <div class="stat-label">代碼行數</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">25+</div>
+                        <div class="stat-label">Kotlin文件</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">16</div>
+                        <div class="stat-label">布局文件</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">主要功能模塊</div>
+                    </div>
+                </div>
+
+                <h3>技術實現亮點</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-database"></i> 數據庫設計</h4>
+                        <p>使用Room ORM，設計Card、Tag、Link實體關係，支持關聯查詢和事務操作。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-sync-alt"></i> 異步處理</h4>
+                        <p>Kotlin Coroutines處理耗時操作，Flow響應式數據流，確保UI流暢性。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-shield-alt"></i> 安全加密</h4>
+                        <p>SHA-256加鹽哈希密碼存儲，生物識別API集成，多層安全保護。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-mobile-alt"></i> 響應式設計</h4>
+                        <p>ConstraintLayout響應式布局，適配不同屏幕密度，Material Design規範。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="developer" class="section">
+                <h2><i class="fas fa-user-tie"></i> 開發者信息</h2>
+                
+                <div class="developer-info">
+                    <h3>Danny Wang</h3>
+                    <p style="font-size: 1.2rem; margin: 20px 0;">Android開發工程師 | 知識管理愛好者</p>
+                    <p>專注於移動應用開發，致力於創造優秀的用戶體驗。Zettelkasten項目體現了對知識管理方法論的深度理解，以及現代Android開發最佳實踐的運用。</p>
+                </div>
+
+                <h3>開發歷程</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-lightbulb"></i> 項目構思</h4>
+                        <p>基於Zettelkasten方法論，設計原子化筆記系統，解決傳統筆記軟件的知識孤島問題。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-code"></i> 技術選型</h4>
+                        <p>選用現代Android技術棧，重點考慮性能、安全性和用戶體驗的平衡。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-paint-brush"></i> UI/UX設計</h4>
+                        <p>遵循Material Design設計語言，注重信息架構和交互流程的合理性。</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-rocket"></i> 性能優化</h4>
+                        <p>數據庫查詢優化、內存管理、異步處理，確保應用在各種設備上的流暢運行。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2025 Danny Wang. Zettelkasten Android App Portfolio.</p>
+            <p>Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> and <i class="fab fa-android" style="color: #a4c639;"></i></p>
+        </footer>
+    </div>
+
+    <div class="scroll-top" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // 平滑滾動
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 回到頂部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 顯示/隱藏回到頂部按鈕
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.pageYOffset > 300) {
+                scrollTop.style.display = 'flex';
+            } else {
+                scrollTop.style.display = 'none';
+            }
+        });
+
+        // 添加滾動動畫
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // 觀察所有section
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+
+        // PowerPoint 導出功能
+        function exportToPowerPoint() {
+            // 創建 PowerPoint 內容
+            const slides = [
+                {
+                    title: "Zettelkasten Android APP",
+                    subtitle: "智能卡片筆記應用 - 作品報告",
+                    content: "Developer: Danny Wang | 2025"
+                },
+                {
+                    title: "項目概覽",
+                    content: [
+                        "• 基於卡片盒筆記法理念的現代化Android應用",
+                        "• 專為知識工作者設計",
+                        "• 幫助用戶構建個人知識網絡",
+                        "• 15+ 核心功能，8個主要頁面",
+                        "• 100% Kotlin開發，16個布局文件"
+                    ]
+                },
+                {
+                    title: "核心功能",
+                    content: [
+                        "• 智能筆記編輯 - 原子化卡片設計，富文本編輯",
+                        "• 標籤管理系統 - 靈活分類，標籤雲視覺化",
+                        "• 全文搜索 - 強大搜索功能，智能建議",
+                        "• 卡片連結 - 建立關聯，形成知識網絡",
+                        "• 數據統計 - 可視化圖表，追蹤習慣",
+                        "• 安全保護 - 密碼鎖定 + 生物識別",
+                        "• 深色模式 - Material Design設計",
+                        "• 響應式設計 - 適配不同屏幕尺寸"
+                    ]
+                },
+                {
+                    title: "技術架構",
+                    content: [
+                        "• MVVM架構模式",
+                        "• Android Jetpack",
+                        "• Kotlin 1.9.22",
+                        "• Room Database",
+                        "• Coroutines + Flow",
+                        "• Material Design",
+                        "• Biometric API"
+                    ]
+                },
+                {
+                    title: "主要布局展示",
+                    content: [
+                        "• 主頁布局 - 抽屜式導航，Fragment容器",
+                        "• 卡片編輯 - 滾動式編輯界面，標籤選擇",
+                        "• 搜索頁面 - 實時搜索，標籤篩選",
+                        "• 標籤管理 - 雙視圖模式，標籤雲視覺化",
+                        "• 統計分析 - 多卡片式統計，可視化圖表",
+                        "• 密碼鎖定 - 安全界面，生物識別支持"
+                    ]
+                },
+                {
+                    title: "項目統計",
+                    content: [
+                        "• 5,000+ 代碼行數",
+                        "• 25+ Kotlin文件",
+                        "• 16 布局文件",
+                        "• 8 主要功能模塊",
+                        "• Room ORM數據庫設計",
+                        "• Kotlin Coroutines異步處理",
+                        "• Material Design響應式布局",
+                        "• 生物識別API集成"
+                    ]
+                },
+                {
+                    title: "開發者信息",
+                    content: [
+                        "• Danny Wang",
+                        "• Android開發工程師 | 知識管理愛好者",
+                        "• 專注於移動應用開發",
+                        "• 致力於創造優秀的用戶體驗",
+                        "• 體現對知識管理方法論的深度理解",
+                        "• 運用現代Android開發最佳實踐"
+                    ]
+                },
+                {
+                    title: "謝謝觀看",
+                    subtitle: "Zettelkasten - 智能卡片筆記應用",
+                    content: "感謝您的時間與關注，期待與您進一步交流"
+                }
+            ];
+
+            // 生成 PowerPoint 內容字符串
+            let pptContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Zettelkasten APP - PowerPoint Export</title>
+    <style>
+        body { font-family: 'Microsoft YaHei', Arial, sans-serif; margin: 0; padding: 20px; }
+        .slide { page-break-after: always; padding: 40px; min-height: 80vh; }
+        .slide h1 { color: #667eea; font-size: 2.5rem; margin-bottom: 20px; }
+        .slide h2 { color: #764ba2; font-size: 2rem; margin-bottom: 30px; }
+        .slide ul { font-size: 1.2rem; line-height: 1.8; }
+        .slide li { margin-bottom: 10px; }
+        .title-slide { text-align: center; background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .title-slide h1 { color: white; font-size: 3rem; }
+        @media print { .slide { page-break-after: always; } }
+    </style>
+</head>
+<body>
+`;
+
+            slides.forEach((slide, index) => {
+                const isTitle = index === 0 || index === slides.length - 1;
+                pptContent += `
+    <div class="slide ${isTitle ? 'title-slide' : ''}">
+        <h1>${slide.title}</h1>
+        ${slide.subtitle ? `<h2>${slide.subtitle}</h2>` : ''}
+        ${Array.isArray(slide.content) ? 
+            `<ul>${slide.content.map(item => `<li>${item}</li>`).join('')}</ul>` : 
+            `<p style="font-size: 1.3rem; line-height: 1.6;">${slide.content}</p>`
+        }
+    </div>
+`;
+            });
+
+            pptContent += `
+</body>
+</html>
+`;
+
+            // 創建並下載文件
+            const blob = new Blob([pptContent], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Zettelkasten_APP_Portfolio.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('PowerPoint格式已導出！\n\n使用方法：\n1. 打開下載的HTML文件\n2. 使用瀏覽器的"打印"功能\n3. 選擇"另存為PDF"或直接打印\n4. 或者複製內容到PowerPoint中');
+        }
+    </script>
+</body>
+</html> 

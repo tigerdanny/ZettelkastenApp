@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zettelkasten Android APP - 作品展示簡報</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 60px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            background: white;
+            box-shadow: 0 0 50px rgba(0,0,0,0.2);
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .slide h1 {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .slide h2 {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        .slide h3 {
+            font-size: 2rem;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .slide p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: #666;
+            max-width: 900px;
+            margin: 0 auto 30px;
+        }
+
+        .slide ul {
+            font-size: 1.3rem;
+            line-height: 2;
+            color: #666;
+            text-align: left;
+            max-width: 800px;
+        }
+
+        .slide li {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .slide li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .feature-grid-ppt {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px 0;
+        }
+
+        .feature-card-ppt {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card-ppt:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-card-ppt i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card-ppt h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .tech-stack-ppt {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 900px;
+            margin: 40px 0;
+        }
+
+        .tech-item-ppt {
+            background: white;
+            border: 3px solid #667eea;
+            color: #667eea;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item-ppt:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .tech-item-ppt i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px 0;
+        }
+
+        .stat-card-ppt {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .stat-number-ppt {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label-ppt {
+            font-size: 1.2rem;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #667eea;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .slide-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: #667eea;
+            z-index: 1000;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .title-slide h1 {
+            color: white;
+            font-size: 5rem;
+            margin-bottom: 30px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .badges-ppt {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .badge-ppt {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 25px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .layout-demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 40px 0;
+        }
+
+        .layout-preview {
+            background: #f8f9fa;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .layout-preview h4 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .layout-preview .mockup-small {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .architecture-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 40px 0;
+        }
+
+        .arch-layer {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .arch-layer h4 {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .arch-layer p {
+            font-size: 1.1rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .contact-info {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .contact-links-ppt {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-link-ppt {
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .contact-link-ppt:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+            }
+            
+            .slide h1 {
+                font-size: 2.5rem;
+            }
+            
+            .slide h2 {
+                font-size: 2rem;
+            }
+            
+            .feature-grid-ppt,
+            .layout-demo {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid,
+            .tech-stack-ppt {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- 幻燈片指示器 -->
+        <div class="slide-indicator">
+            <span id="current-slide">1</span> / <span id="total-slides">10</span>
+        </div>
+
+        <!-- 幻燈片 1: 標題頁 -->
+        <div class="slide active title-slide">
+            <h1><i class="fas fa-brain"></i> Zettelkasten</h1>
+            <p class="subtitle">智能卡片筆記應用</p>
+            <p style="font-size: 1.8rem; margin-bottom: 40px;">Android APP 作品展示簡報</p>
+            
+            <div class="badges-ppt">
+                <span class="badge-ppt"><i class="fab fa-android"></i> Android 6.0+</span>
+                <span class="badge-ppt"><i class="fas fa-code"></i> Kotlin 1.9.22</span>
+                <span class="badge-ppt"><i class="fas fa-database"></i> Room Database</span>
+                <span class="badge-ppt"><i class="fas fa-shield-alt"></i> 生物識別</span>
+            </div>
+            
+            <p style="font-size: 1.3rem; margin-top: 60px; opacity: 0.8;">
+                Developer: Danny Wang | 2024
+            </p>
+        </div>
+
+        <!-- 幻燈片 2: 項目概覽 -->
+        <div class="slide">
+            <h2><i class="fas fa-mobile-alt"></i> 項目概覽</h2>
+            
+            <p>Zettelkasten是一個基於卡片盒筆記法理念的現代化Android應用，專為知識工作者設計，幫助用戶構建個人知識網絡，提高學習和創作效率。</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card-ppt">
+                    <div class="stat-number-ppt">15+</div>
+                    <div class="stat-label-ppt">核心功能</div>
+                </div>
+                <div class="stat-card-ppt">
+                    <div class="stat-number-ppt">8</div>
+                    <div class="stat-label-ppt">主要頁面</div>
+                </div>
+                <div class="stat-card-ppt">
+                    <div class="stat-number-ppt">100%</div>
+                    <div class="stat-label-ppt">Kotlin開發</div>
+                </div>
+                <div class="stat-card-ppt">
+                    <div class="stat-number-ppt">16</div>
+                    <div class="stat-label-ppt">布局文件</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 幻燈片 3: 核心功能 -->
+        <div class="slide">
+            <h2><i class="fas fa-star"></i> 核心功能</h2>
+            
+            <div class="feature-grid-ppt">
+                <div class="feature-card-ppt">
+                    <i class="fas fa-edit"></i>
+                    <h4>智能筆記編輯</h4>
+                    <p>原子化卡片設計，富文本編輯，實時保存</p>
+                </div>
+                
+                <div class="feature-card-ppt">
+                    <i class="fas fa-tags"></i>
+                    <h4>標籤管理系統</h4>
+                    <p>靈活分類，標籤雲視覺化，批量操作</p>
+                </div>
+                
+                <div class="feature-card-ppt">
+                    <i class="fas fa-search"></i>
+                    <h4>全文搜索</h4>
+                    <p>強大搜索功能，智能建議，搜索歷史</p>
+                </div>
+                
+                <div class="feature-card-ppt">
+                    <i class="fas fa-fingerprint"></i>
+                    <h4>安全保護</h4>
+                    <p>密碼鎖定，生物識別，本地加密存儲</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 幻燈片 4: 技術架構 -->
+        <div class="slide">
+            <h2><i class="fas fa-cogs"></i> 技術架構</h2>
+            
+            <div class="architecture-visual">
+                <div class="arch-layer">
+                    <h4>UI Layer (Presentation)</h4>
+                    <p>Activities • Fragments • ViewModels • Adapters</p>
+                </div>
+                <div class="arch-layer">
+                    <h4>Domain Layer (Business Logic)</h4>
+                    <p>Use Cases • Entities • Repository Interfaces</p>
+                </div>
+                <div class="arch-layer">
+                    <h4>Data Layer (Data Access)</h4>
+                    <p>Room Database • DAOs • Data Sources • Repositories</p>
+                </div>
+            </div>
+            
+            <p>採用MVVM架構模式，確保代碼結構清晰，易於維護和測試</p>
+        </div>
+
+        <!-- 幻燈片 5: 核心技術棧 -->
+        <div class="slide">
+            <h2><i class="fas fa-code"></i> 核心技術棧</h2>
+            
+            <div class="tech-stack-ppt">
+                <div class="tech-item-ppt">
+                    <i class="fab fa-android"></i>
+                    Android Jetpack
+                </div>
+                <div class="tech-item-ppt">
+                    <i class="fas fa-code"></i>
+                    Kotlin 1.9.22
+                </div>
+                <div class="tech-item-ppt">
+                    <i class="fas fa-database"></i>
+                    Room Database
+                </div>
+                <div class="tech-item-ppt">
+                    <i class="fas fa-sync-alt"></i>
+                    Coroutines + Flow
+                </div>
+                <div class="tech-item-ppt">
+                    <i class="fas fa-paint-brush"></i>
+                    Material Design
+                </div>
+                <div class="tech-item-ppt">
+                    <i class="fas fa-shield-alt"></i>
+                    Biometric API
+                </div>
+            </div>
+            
+            <p>使用現代Android開發最佳實踐，確保應用性能和用戶體驗</p>
+        </div>
+
+        <!-- 幻燈片 6: 主要布局展示 -->
+        <div class="slide">
+            <h2><i class="fas fa-palette"></i> 主要布局展示</h2>
+            
+            <div class="layout-demo">
+                <div class="layout-preview">
+                    <h4><i class="fas fa-home"></i> 主頁布局</h4>
+                    <div class="mockup-small">
+&lt;DrawerLayout&gt;
+  └── &lt;CoordinatorLayout&gt;
+      ├── &lt;NavigationView&gt;
+      ├── &lt;FrameLayout&gt;
+      └── &lt;FloatingActionButton&gt;
+&lt;/DrawerLayout&gt;
+
+• 抽屜式導航設計
+• Fragment動態替換
+• Material Design風格
+                    </div>
+                </div>
+                
+                <div class="layout-preview">
+                    <h4><i class="fas fa-edit"></i> 卡片編輯</h4>
+                    <div class="mockup-small">
+&lt;NestedScrollView&gt;
+  └── &lt;LinearLayout&gt;
+      ├── &lt;TextInputLayout&gt;
+      ├── &lt;TextInputLayout&gt;
+      ├── &lt;ChipGroup&gt;
+      └── &lt;Button&gt;
+&lt;/NestedScrollView&gt;
+
+• 滾動式編輯界面
+• Material文本輸入框
+• 標籤Chip組件
+                    </div>
+                </div>
+                
+                <div class="layout-preview">
+                    <h4><i class="fas fa-search"></i> 搜索頁面</h4>
+                    <div class="mockup-small">
+&lt;ConstraintLayout&gt;
+  ├── &lt;SearchView&gt;
+  ├── &lt;ChipGroup&gt;
+  ├── &lt;RecyclerView&gt;
+  └── &lt;TextView&gt;
+&lt;/ConstraintLayout&gt;
+
+• 實時搜索建議
+• 標籤組合篩選
+• 結果高亮顯示
+                    </div>
+                </div>
+                
+                <div class="layout-preview">
+                    <h4><i class="fas fa-chart-bar"></i> 統計分析</h4>
+                    <div class="mockup-small">
+&lt;NestedScrollView&gt;
+  └── &lt;LinearLayout&gt;
+      ├── &lt;CardView&gt; (總覽)
+      ├── &lt;CardView&gt; (寫作統計)
+      ├── &lt;CardView&gt; (卡片統計)
+      └── &lt;CardView&gt; (標籤統計)
+&lt;/NestedScrollView&gt;
+
+• 可視化統計圖表
+• 時間序列分析
+• 趨勢展示
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 幻燈片 7: 安全功能 -->
+        <div class="slide">
+            <h2><i class="fas fa-shield-alt"></i> 安全功能</h2>
+            
+            <div class="feature-grid-ppt">
+                <div class="feature-card-ppt">
+                    <i class="fas fa-lock"></i>
+                    <h4>密碼保護</h4>
+                    <p>SHA-256加鹽哈希，安全加密存儲，多重驗證機制</p>
+                </div>
+                
+                <div class="feature-card-ppt">
+                    <i class="fas fa-fingerprint"></i>
+                    <h4>生物識別</h4>
+                    <p>指紋識別，面部識別，快速安全解鎖體驗</p>
+                </div>
+                
+                <div class="feature-card-ppt">
+                    <i class="fas fa-database"></i>
+                    <h4>本地存儲</h4>
+                    <p>所有數據本地存儲，保護用戶隱私安全</p>
+                </div>
+                
+                <div class="feature-card-ppt">
+                    <i class="fas fa-clock"></i>
+                    <h4>自動鎖定</h4>
+                    <p>智能鎖定機制，離開應用自動保護數據</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 幻燈片 8: 項目統計 -->
+        <div class="slide">
+            <h2><i class="fas fa-chart-pie"></i> 項目統計</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card-ppt">
+                    <div class="stat-number-ppt">5,000+</div>
+                    <div class="stat-label-ppt">代碼行數</div>
+                </div>
+                <div class="stat-card-ppt">
+                    <div class="stat-number-ppt">25+</div>
+                    <div class="stat-label-ppt">Kotlin文件</div>
+                </div>
+                <div class="stat-card-ppt">
+                    <div class="stat-number-ppt">16</div>
+                    <div class="stat-label-ppt">布局文件</div>
+                </div>
+                <div class="stat-card-ppt">
+                    <div class="stat-number-ppt">8</div>
+                    <div class="stat-label-ppt">功能模塊</div>
+                </div>
+            </div>
+            
+            <h3>技術實現亮點</h3>
+            <ul style="text-align: center; list-style: none;">
+                <li>Room ORM數據庫設計，支持關聯查詢和事務操作</li>
+                <li>Kotlin Coroutines異步處理，Flow響應式數據流</li>
+                <li>Material Design設計語言，響應式布局適配</li>
+                <li>生物識別API集成，多層安全保護機制</li>
+            </ul>
+        </div>
+
+        <!-- 幻燈片 9: 開發者信息 -->
+        <div class="slide title-slide">
+            <h2><i class="fas fa-user-tie"></i> 開發者信息</h2>
+            
+            <div class="contact-info">
+                <h3 style="font-size: 2.5rem; margin-bottom: 20px;">Danny Wang</h3>
+                <p style="font-size: 1.5rem; margin-bottom: 30px;">Android開發工程師 | 知識管理愛好者</p>
+                
+                <p>專注於移動應用開發，致力於創造優秀的用戶體驗。Zettelkasten項目體現了對知識管理方法論的深度理解，以及現代Android開發最佳實踐的運用。</p>
+            </div>
+        </div>
+
+        <!-- 幻燈片 10: 謝謝 -->
+        <div class="slide title-slide">
+            <h1><i class="fas fa-heart"></i> 謝謝觀看</h1>
+            <p class="subtitle">Zettelkasten - 智能卡片筆記應用</p>
+            
+            <p style="font-size: 1.5rem; margin: 40px 0;">
+                感謝您的時間與關注<br>
+                期待與您進一步交流
+            </p>
+            
+            <p style="font-size: 1.2rem; margin-top: 60px; opacity: 0.8;">
+                Made with <i class="fas fa-heart" style="color: #ff6b6b;"></i> and <i class="fab fa-android" style="color: #4CAF50;"></i>
+            </p>
+        </div>
+
+        <!-- 導航按鈕 -->
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousSlide()">
+                <i class="fas fa-chevron-left"></i> 上一張
+            </button>
+            <button class="nav-btn" onclick="nextSlide()">
+                下一張 <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            slides[index].classList.add('fade-in');
+            
+            setTimeout(() => {
+                slides[index].classList.remove('fade-in');
+            }, 800);
+            
+            document.getElementById('current-slide').textContent = index + 1;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        function previousSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // 鍵盤導航
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (e.key === 'Home') {
+                currentSlide = 0;
+                showSlide(currentSlide);
+            } else if (e.key === 'End') {
+                currentSlide = totalSlides - 1;
+                showSlide(currentSlide);
+            }
+        });
+
+        // 觸摸手勢支持
+        let startX = 0;
+        let endX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            startX = e.touches[0].clientX;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            endX = e.changedTouches[0].clientX;
+            
+            if (startX - endX > 50) {
+                nextSlide();
+            } else if (endX - startX > 50) {
+                previousSlide();
+            }
+        });
+
+        // 自動播放功能（可選）
+        let autoPlay = false;
+        let autoPlayInterval;
+
+        function startAutoPlay() {
+            if (autoPlay) {
+                autoPlayInterval = setInterval(nextSlide, 5000);
+            }
+        }
+
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);
+        }
+
+        // 點擊任意位置切換下一張
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.navigation') && !e.target.closest('.contact-link-ppt')) {
+                nextSlide();
+            }
+        });
+
+        // 進度條（可選）
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.documentElement.style.setProperty('--progress', progress + '%');
+        }
+
+        // 初始化
+        showSlide(0);
+        updateProgress();
+    </script>
+</body>
+</html> 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <PreferenceCategory android:title="常規設置">
+        <SwitchPreferenceCompat
+            android:key="dark_mode"
+            android:title="深色模式"
+            android:summary="啟用應用的深色主題"
+            android:icon="@drawable/ic_dark_mode" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="安全設置">
+        <Preference
+            android:key="set_password"
+            android:title="設置密碼"
+            android:summary="設置應用密碼以保護您的數據"
+            android:icon="@drawable/ic_lock" />
+            
+        <SwitchPreferenceCompat
+            android:key="biometric_enabled"
+            android:title="生物識別"
+            android:summary="使用指紋或面部識別快速解鎖"
+            android:icon="@drawable/ic_fingerprint" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="數據">
+        <Preference
+            android:key="clear_data"
+            android:title="清除所有數據"
+            android:summary="刪除所有卡片、標籤和連結（無法恢復）"
+            android:icon="@drawable/ic_delete_forever" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="關於">
+        <Preference
+            android:key="app_version"
+            android:title="版本信息"
+            android:summary="查看應用版本和相關信息"
+            android:icon="@drawable/ic_info" />
+    </PreferenceCategory>
+</PreferenceScreen> 

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zettelkasten Android APP - PowerPoint Export</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .slide {
+            width: 100%;
+            min-height: 100vh;
+            padding: 60px;
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .slide h1 {
+            color: #667eea;
+            font-size: 3rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .slide h2 {
+            color: #764ba2;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slide h3 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+        }
+
+        .slide ul {
+            font-size: 1.3rem;
+            line-height: 2;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .slide li {
+            margin-bottom: 15px;
+            padding-left: 10px;
+        }
+
+        .slide p {
+            font-size: 1.4rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            color: white;
+            font-size: 4rem;
+            margin-bottom: 30px;
+        }
+
+        .title-slide h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .title-slide p {
+            font-size: 1.6rem;
+            opacity: 0.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 600px;
+            margin: 30px auto;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 2px solid #667eea;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 800px;
+            margin: 30px auto;
+        }
+
+        .tech-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        @media print {
+            .slide {
+                page-break-after: always;
+                min-height: 100vh;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+            }
+            
+            .slide h1 {
+                font-size: 2.5rem;
+            }
+            
+            .slide h2 {
+                font-size: 1.8rem;
+            }
+            
+            .stats-grid,
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 幻燈片 1: 標題頁 -->
+    <div class="slide title-slide">
+        <h1>🧠 Zettelkasten</h1>
+        <h2>智能卡片筆記應用</h2>
+        <p>Android APP 作品報告</p>
+        <p style="margin-top: 60px;">Developer: Danny Wang | 2025</p>
+    </div>
+
+    <!-- 幻燈片 2: 項目概覽 -->
+    <div class="slide">
+        <h1>📱 項目概覽</h1>
+        <p>Zettelkasten是一個基於卡片盒筆記法理念的現代化Android應用，專為知識工作者設計，幫助用戶構建個人知識網絡，提高學習和創作效率。</p>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">核心功能</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">主要頁面</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Kotlin開發</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">16</div>
+                <div class="stat-label">布局文件</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 幻燈片 3: 核心功能 -->
+    <div class="slide">
+        <h1>⭐ 核心功能</h1>
+        <ul>
+            <li>📝 <strong>智能筆記編輯</strong> - 原子化卡片設計，富文本編輯和實時保存</li>
+            <li>🏷️ <strong>標籤管理系統</strong> - 靈活的標籤分類，標籤雲視覺化展示</li>
+            <li>🔍 <strong>全文搜索</strong> - 強大的搜索功能，智能建議和搜索歷史</li>
+            <li>🔗 <strong>卡片連結</strong> - 建立卡片間的關聯，形成知識網絡</li>
+            <li>📊 <strong>數據統計</strong> - 可視化統計圖表，追蹤寫作習慣</li>
+            <li>🔒 <strong>安全保護</strong> - 密碼鎖定 + 生物識別雙重認證</li>
+            <li>🌙 <strong>深色模式</strong> - Material Design設計語言</li>
+            <li>📱 <strong>響應式設計</strong> - 適配不同屏幕尺寸</li>
+        </ul>
+    </div>
+
+    <!-- 幻燈片 4: 技術架構 -->
+    <div class="slide">
+        <h1>🏗️ 技術架構</h1>
+        <h3>MVVM架構模式</h3>
+        <ul style="font-size: 1.2rem;">
+            <li><strong>UI Layer</strong> - Activities、Fragments、ViewModels、Adapters</li>
+            <li><strong>Domain Layer</strong> - Use Cases、Entities、Repository Interfaces</li>
+            <li><strong>Data Layer</strong> - Room Database、DAOs、Data Sources、Repositories</li>
+        </ul>
+        
+        <div class="tech-grid">
+            <div class="tech-item">Android Jetpack</div>
+            <div class="tech-item">Kotlin 1.9.22</div>
+            <div class="tech-item">Room Database</div>
+            <div class="tech-item">Coroutines + Flow</div>
+            <div class="tech-item">Material Design</div>
+            <div class="tech-item">Biometric API</div>
+        </div>
+    </div>
+
+    <!-- 幻燈片 5: 主要布局展示 -->
+    <div class="slide">
+        <h1>🎨 主要布局展示</h1>
+        <ul>
+            <li>🏠 <strong>主頁布局</strong> - 抽屜式導航設計，Fragment動態替換</li>
+            <li>✏️ <strong>卡片編輯</strong> - 滾動式編輯界面，Material文本輸入框</li>
+            <li>🔍 <strong>搜索頁面</strong> - 實時搜索建議，標籤組合篩選</li>
+            <li>🏷️ <strong>標籤管理</strong> - 雙視圖模式切換，標籤雲視覺化</li>
+            <li>📊 <strong>統計分析</strong> - 多卡片式統計布局，可視化圖表展示</li>
+            <li>🔒 <strong>密碼鎖定</strong> - 密碼保護界面，生物識別支持</li>
+            <li>⚙️ <strong>設置對話框</strong> - Material對話框設計</li>
+            <li>📄 <strong>卡片項目</strong> - Material卡片風格，內容預覽</li>
+        </ul>
+    </div>
+
+    <!-- 幻燈片 6: 安全功能 -->
+    <div class="slide">
+        <h1>🛡️ 安全功能</h1>
+        <ul>
+            <li>🔐 <strong>密碼保護</strong> - SHA-256加鹽哈希，安全加密存儲</li>
+            <li>👆 <strong>生物識別</strong> - 指紋識別，面部識別，快速安全解鎖</li>
+            <li>💾 <strong>本地存儲</strong> - 所有數據本地存儲，保護用戶隱私</li>
+            <li>⏰ <strong>自動鎖定</strong> - 智能鎖定機制，離開應用自動保護</li>
+            <li>🔒 <strong>多重驗證</strong> - 密碼 + 生物識別雙重認證</li>
+            <li>🛡️ <strong>數據加密</strong> - 本地加密存儲，確保數據安全</li>
+        </ul>
+    </div>
+
+    <!-- 幻燈片 7: 項目統計 -->
+    <div class="slide">
+        <h1>📊 項目統計</h1>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">5,000+</div>
+                <div class="stat-label">代碼行數</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">25+</div>
+                <div class="stat-label">Kotlin文件</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">16</div>
+                <div class="stat-label">布局文件</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">功能模塊</div>
+            </div>
+        </div>
+
+        <h3>技術實現亮點</h3>
+        <ul>
+            <li>Room ORM數據庫設計，支持關聯查詢和事務操作</li>
+            <li>Kotlin Coroutines異步處理，Flow響應式數據流</li>
+            <li>Material Design設計語言，響應式布局適配</li>
+            <li>生物識別API集成，多層安全保護機制</li>
+        </ul>
+    </div>
+
+    <!-- 幻燈片 8: 開發者信息 -->
+    <div class="slide">
+        <h1>👨‍💻 開發者信息</h1>
+        <div style="text-align: center; margin: 40px 0;">
+            <h2 style="color: #667eea;">Danny Wang</h2>
+            <p style="font-size: 1.5rem; color: #764ba2;">Android開發工程師 | 知識管理愛好者</p>
+        </div>
+        
+        <ul>
+            <li>專注於移動應用開發，致力於創造優秀的用戶體驗</li>
+            <li>深度理解知識管理方法論，特別是Zettelkasten方法</li>
+            <li>運用現代Android開發最佳實踐</li>
+            <li>重視代碼質量、性能優化和用戶體驗</li>
+            <li>持續學習新技術，保持技術敏感度</li>
+        </ul>
+    </div>
+
+    <!-- 幻燈片 9: 謝謝觀看 -->
+    <div class="slide title-slide">
+        <h1>❤️ 謝謝觀看</h1>
+        <h2>Zettelkasten - 智能卡片筆記應用</h2>
+        <p>感謝您的時間與關注</p>
+        <p>期待與您進一步交流</p>
+        <p style="margin-top: 60px; opacity: 0.8;">
+            Made with ❤️ and 🤖
+        </p>
+    </div>
+
+    <script>
+        // 打印提示
+        window.onload = function() {
+            console.log('PowerPoint導出版本已準備就緒！');
+            console.log('使用方法：');
+            console.log('1. Ctrl+P 打開打印對話框');
+            console.log('2. 選擇"另存為PDF"');
+            console.log('3. 或者複製內容到PowerPoint中');
+        };
+    </script>
+</body>
+</html> 

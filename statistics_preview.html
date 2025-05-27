@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zettelkasten 統計頁面預覽 - 專案風格設計</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #f5f5f5;
+            height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 16px;
+        }
+
+        /* 統計概覽區域 */
+        .stats-overview {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .stats-overview .emoji {
+            font-size: 20px;
+            margin-right: 8px;
+        }
+
+        .stats-overview .title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* 卡片樣式 */
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 0 16px 16px 16px;
+            padding: 16px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* 快速統計 */
+        .quick-stats-grid {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .stat-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #6200EE;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* 創建活動統計 */
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .activity-period {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .activity-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .activity-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .activity-label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .activity-count {
+            font-size: 14px;
+            font-weight: bold;
+            color: #6200EE;
+        }
+
+        .activity-unit {
+            font-size: 12px;
+            color: #666;
+            margin-left: 4px;
+        }
+
+        /* 熱門標籤 */
+        .popular-tags-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .tags-count-info {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .tag-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .tag-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .tag-rank {
+            font-size: 16px;
+            font-weight: bold;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .tag-rank.gold {
+            color: #FF8F00;
+        }
+
+        .tag-rank.silver {
+            color: #424242;
+        }
+
+        .tag-rank.bronze {
+            color: #FFB74D;
+        }
+
+        .tag-rank.normal {
+            color: #666;
+        }
+
+        .tag-name {
+            flex: 1;
+            margin-left: 12px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .tag-usage {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .view-all-btn {
+            text-align: center;
+            padding: 8px;
+            margin-top: 8px;
+            color: #6200EE;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .view-all-btn:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* 內容統計 */
+        .content-stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8dp;
+            margin-bottom: 4px;
+        }
+
+        .content-stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-stat-label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .content-stat-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #6200EE;
+        }
+
+        .content-stat-unit {
+            font-size: 12px;
+            color: #666;
+            margin-left: 4px;
+        }
+
+        /* 空狀態 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-emoji {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .empty-subtitle {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* 動畫效果 */
+        .stats-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .stats-card:nth-child(2) { animation-delay: 0.1s; }
+        .stats-card:nth-child(3) { animation-delay: 0.2s; }
+        .stats-card:nth-child(4) { animation-delay: 0.3s; }
+        .stats-card:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0;
+            }
+            
+            .stats-card {
+                margin: 0 12px 12px 12px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 統計概覽區域 -->
+        <div class="stats-overview">
+            <span class="emoji">📊</span>
+            <span class="title">統計概覽</span>
+        </div>
+
+        <!-- 快速統計卡片 -->
+        <div class="stats-card">
+            <div class="card-title">快速統計</div>
+            <div class="quick-stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalCards">24</span>
+                    <span class="stat-label">卡片</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="totalTags">8</span>
+                    <span class="stat-label">標籤</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="totalUsage">47</span>
+                    <span class="stat-label">標籤使用</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 創建活動統計 -->
+        <div class="stats-card">
+            <div class="activity-header">
+                <div class="card-title">創建活動</div>
+                <div class="activity-period">最近 7 天</div>
+            </div>
+            
+            <div class="activity-item">
+                <span class="activity-label">今日創建</span>
+                <div>
+                    <span class="activity-count" id="todayCards">3</span>
+                    <span class="activity-unit">張卡片</span>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <span class="activity-label">本週創建</span>
+                <div>
+                    <span class="activity-count" id="weekCards">12</span>
+                    <span class="activity-unit">張卡片</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 熱門標籤統計 -->
+        <div class="stats-card">
+            <div class="popular-tags-header">
+                <div class="card-title">熱門標籤</div>
+                <div class="tags-count-info">前 5 名</div>
+            </div>
+            
+            <div id="popularTagsList">
+                <div class="tag-item">
+                    <span class="tag-rank gold">#1</span>
+                    <span class="tag-name">學習</span>
+                    <span class="tag-usage">12 次</span>
+                </div>
+                <div class="tag-item">
+                    <span class="tag-rank silver">#2</span>
+                    <span class="tag-name">想法</span>
+                    <span class="tag-usage">8 次</span>
+                </div>
+                <div class="tag-item">
+                    <span class="tag-rank bronze">#3</span>
+                    <span class="tag-name">工作</span>
+                    <span class="tag-usage">7 次</span>
+                </div>
+                <div class="tag-item">
+                    <span class="tag-rank normal">#4</span>
+                    <span class="tag-name">技術</span>
+                    <span class="tag-usage">6 次</span>
+                </div>
+                <div class="tag-item">
+                    <span class="tag-rank normal">#5</span>
+                    <span class="tag-name">閱讀</span>
+                    <span class="tag-usage">5 次</span>
+                </div>
+            </div>
+            
+            <div class="view-all-btn" onclick="viewAllTags()">查看全部標籤</div>
+        </div>
+
+        <!-- 內容統計 -->
+        <div class="stats-card">
+            <div class="card-title">內容統計</div>
+            
+            <div class="content-stat-item">
+                <span class="content-stat-label">平均字數</span>
+                <div>
+                    <span class="content-stat-value" id="avgLength">156</span>
+                    <span class="content-stat-unit">字</span>
+                </div>
+            </div>
+            
+            <div class="content-stat-item">
+                <span class="content-stat-label">最長卡片</span>
+                <div>
+                    <span class="content-stat-value" id="maxLength">342</span>
+                    <span class="content-stat-unit">字</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 空狀態（隱藏） -->
+        <div class="empty-state hidden" id="emptyState">
+            <div class="empty-emoji">📊</div>
+            <div class="empty-title">暫無統計數據</div>
+            <div class="empty-subtitle">創建一些卡片後查看統計信息</div>
+        </div>
+    </div>
+
+    <script>
+        // 模擬數據更新動畫
+        function animateNumbers() {
+            const elements = [
+                { id: 'totalCards', target: 24, unit: '' },
+                { id: 'totalTags', target: 8, unit: '' },
+                { id: 'totalUsage', target: 47, unit: '' },
+                { id: 'todayCards', target: 3, unit: '' },
+                { id: 'weekCards', target: 12, unit: '' },
+                { id: 'avgLength', target: 156, unit: '' },
+                { id: 'maxLength', target: 342, unit: '' }
+            ];
+
+            elements.forEach(({ id, target, unit }) => {
+                const element = document.getElementById(id);
+                let current = 0;
+                const increment = target / 30;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        element.textContent = target + unit;
+                        clearInterval(timer);
+                    } else {
+                        element.textContent = Math.floor(current) + unit;
+                    }
+                }, 50);
+            });
+        }
+
+        // 查看全部標籤功能
+        function viewAllTags() {
+            alert('導航到標籤頁面');
+        }
+
+        // 添加點擊效果
+        document.querySelectorAll('.stat-item, .activity-item, .tag-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+
+        // 頁面加載完成後開始動畫
+        window.addEventListener('load', () => {
+            setTimeout(animateNumbers, 500);
+        });
+
+        // 模擬切換空狀態
+        function toggleEmptyState() {
+            const isEmpty = Math.random() > 0.5;
+            const emptyState = document.getElementById('emptyState');
+            const statsCards = document.querySelectorAll('.stats-card');
+            
+            if (isEmpty) {
+                emptyState.classList.remove('hidden');
+                statsCards.forEach(card => card.style.display = 'none');
+            } else {
+                emptyState.classList.add('hidden');
+                statsCards.forEach(card => card.style.display = 'block');
+            }
+        }
+    </script>
+</body>
+</html> 

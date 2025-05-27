@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zettelkasten - 布局設計展示</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .layout-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .layout-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        .layout-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .layout-header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .layout-header i {
+            font-size: 1.8rem;
+        }
+
+        .layout-content {
+            padding: 30px;
+        }
+
+        .layout-description {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .layout-description h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .layout-description ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .layout-description li {
+            padding: 5px 0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .layout-description li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .xml-structure {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .xml-structure::before {
+            content: "XML Structure";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .mockup-preview {
+            background: #f0f0f0;
+            border: 3px solid #333;
+            border-radius: 25px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+            max-width: 350px;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .mockup-preview::before {
+            content: "📱 界面預覽";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            color: #667eea;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            border: 2px solid #667eea;
+        }
+
+        .phone-screen {
+            background: #000;
+            border-radius: 20px;
+            padding: 25px 15px 15px 15px;
+            margin: 10px 0;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .phone-screen::before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: #666;
+            border-radius: 2px;
+        }
+
+        .status-bar {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .app-content {
+            background: white;
+            border-radius: 0 0 15px 15px;
+            padding: 15px;
+            min-height: 300px;
+        }
+
+        .mockup-elements {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .mockup-element {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+            position: relative;
+        }
+
+        .mockup-element.toolbar {
+            background: #667eea;
+            color: white;
+            text-align: center;
+        }
+
+        .mockup-element.button {
+            background: #667eea;
+            color: white;
+            text-align: center;
+            border-radius: 25px;
+            padding: 12px 30px;
+            width: auto;
+            display: inline-block;
+        }
+
+        .mockup-element.input {
+            border: 2px solid #667eea;
+            border-radius: 5px;
+        }
+
+        .mockup-element.card {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .tech-tag {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .navigation-tabs {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .nav-tab {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .layout-content {
+                padding: 20px;
+            }
+        }
+
+        .stats-bar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-mobile-alt"></i> Zettelkasten 布局設計展示</h1>
+            <p>Android APP 所有布局文件的詳細 HTML 轉換</p>
+        </header>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">16</div>
+                <div class="stat-label">布局文件</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">主要頁面</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Material Design</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5</div>
+                <div class="stat-label">布局類型</div>
+            </div>
+        </div>
+
+        <div class="navigation-tabs">
+            <a href="#main" class="nav-tab active">主要布局</a>
+            <a href="#fragments" class="nav-tab">Fragment布局</a>
+            <a href="#items" class="nav-tab">項目布局</a>
+            <a href="#dialogs" class="nav-tab">對話框布局</a>
+            <a href="#components" class="nav-tab">組件布局</a>
+        </div>
+
+        <div class="layout-grid">
+            <!-- 主要Activity布局 -->
+            <div class="layout-card" id="main">
+                <div class="layout-header">
+                    <i class="fas fa-home"></i>
+                    <h2>activity_main.xml - 主要Activity</h2>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-description">
+                        <h3>布局功能</h3>
+                        <ul>
+                            <li>抽屜式導航設計 (NavigationView)</li>
+                            <li>Fragment容器管理</li>
+                            <li>浮動操作按鈕 (FAB)</li>
+                            <li>Material Design應用欄</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-tags">
+                        <span class="tech-tag">DrawerLayout</span>
+                        <span class="tech-tag">CoordinatorLayout</span>
+                        <span class="tech-tag">NavigationView</span>
+                        <span class="tech-tag">FloatingActionButton</span>
+                    </div>
+
+                    <div class="xml-structure">
+&lt;androidx.drawerlayout.widget.DrawerLayout&gt;
+    &lt;androidx.coordinatorlayout.widget.CoordinatorLayout&gt;
+        &lt;com.google.android.material.appbar.AppBarLayout&gt;
+            &lt;androidx.appcompat.widget.Toolbar /&gt;
+        &lt;/com.google.android.material.appbar.AppBarLayout&gt;
+        
+        &lt;FrameLayout android:id="@+id/fragment_container" /&gt;
+        
+        &lt;com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_card" /&gt;
+    &lt;/androidx.coordinatorlayout.widget.CoordinatorLayout&gt;
+    
+    &lt;com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu" /&gt;
+&lt;/androidx.drawerlayout.widget.DrawerLayout&gt;
+                    </div>
+
+                    <div class="mockup-preview">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            <div style="background: #f8f9fa; border: 2px solid #667eea; border-radius: 15px; padding: 20px; margin: 10px 0; max-width: 300px; margin-left: auto; margin-right: auto;">
+                                <div style="background: #667eea; color: white; padding: 8px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;">
+                                    會議筆記
+                                </div>
+                                <div style="text-align: left; font-size: 0.9rem; color: #666; margin-bottom: 10px;">
+                                    今天的會議討論了項目進度和下一步計劃，需要重點關注用戶體驗的優化...
+                                </div>
+                                <div style="text-align: right; font-size: 0.8rem; color: #999; margin-bottom: 10px;">
+                                    2024-12-20 14:30
+                                </div>
+                                <div style="display: flex; gap: 5px; justify-content: flex-start;">
+                                    <span style="background: #667eea; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem;">#工作</span>
+                                    <span style="background: #764ba2; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem;">#會議</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 卡片編輯布局 -->
+            <div class="layout-card" id="fragments">
+                <div class="layout-header">
+                    <i class="fas fa-edit"></i>
+                    <h2>fragment_edit_card.xml - 卡片編輯</h2>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-description">
+                        <h3>編輯功能</h3>
+                        <ul>
+                            <li>滾動式編輯界面 (NestedScrollView)</li>
+                            <li>Material Design文本輸入框</li>
+                            <li>標籤選擇器 (ChipGroup)</li>
+                            <li>自動保存提示</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-tags">
+                        <span class="tech-tag">NestedScrollView</span>
+                        <span class="tech-tag">TextInputLayout</span>
+                        <span class="tech-tag">ChipGroup</span>
+                        <span class="tech-tag">MaterialButton</span>
+                    </div>
+
+                    <div class="xml-structure">
+&lt;androidx.core.widget.NestedScrollView&gt;
+    &lt;LinearLayout android:orientation="vertical"&gt;
+        &lt;com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"&gt;
+            &lt;com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_title"
+                android:hint="卡片標題" /&gt;
+        &lt;/com.google.android.material.textfield.TextInputLayout&gt;
+        
+        &lt;com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"&gt;
+            &lt;com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_content"
+                android:hint="卡片內容"
+                android:minLines="5" /&gt;
+        &lt;/com.google.android.material.textfield.TextInputLayout&gt;
+        
+        &lt;com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_tags" /&gt;
+            
+        &lt;com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            android:text="保存卡片" /&gt;
+    &lt;/LinearLayout&gt;
+&lt;/androidx.core.widget.NestedScrollView&gt;
+                    </div>
+
+                    <div class="mockup-preview">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            <div style="background: #f8f9fa; border: 2px solid #667eea; border-radius: 15px; padding: 20px; margin: 10px 0; max-width: 300px; margin-left: auto; margin-right: auto;">
+                                <div style="background: #667eea; color: white; padding: 8px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;">
+                                    會議筆記
+                                </div>
+                                <div style="text-align: left; font-size: 0.9rem; color: #666; margin-bottom: 10px;">
+                                    今天的會議討論了項目進度和下一步計劃，需要重點關注用戶體驗的優化...
+                                </div>
+                                <div style="text-align: right; font-size: 0.8rem; color: #999; margin-bottom: 10px;">
+                                    2024-12-20 14:30
+                                </div>
+                                <div style="display: flex; gap: 5px; justify-content: flex-start;">
+                                    <span style="background: #667eea; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem;">#工作</span>
+                                    <span style="background: #764ba2; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem;">#會議</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 搜索頁面布局 -->
+            <div class="layout-card">
+                <div class="layout-header">
+                    <i class="fas fa-search"></i>
+                    <h2>fragment_search.xml - 搜索頁面</h2>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-description">
+                        <h3>搜索功能</h3>
+                        <ul>
+                            <li>實時搜索建議 (SearchView)</li>
+                            <li>標籤組合篩選</li>
+                            <li>搜索結果展示 (RecyclerView)</li>
+                            <li>空狀態處理</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-tags">
+                        <span class="tech-tag">ConstraintLayout</span>
+                        <span class="tech-tag">SearchView</span>
+                        <span class="tech-tag">ChipGroup</span>
+                        <span class="tech-tag">RecyclerView</span>
+                    </div>
+
+                    <div class="xml-structure">
+&lt;androidx.constraintlayout.widget.ConstraintLayout&gt;
+    &lt;androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:queryHint="搜索卡片..."
+        app:layout_constraintTop_toTopOf="parent" /&gt;
+        
+    &lt;com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_filter_tags"
+        app:layout_constraintTop_toBottomOf="@id/search_view" /&gt;
+        
+    &lt;androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_search_results"
+        app:layout_constraintTop_toBottomOf="@id/chip_group_filter_tags"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" /&gt;
+        
+    &lt;TextView
+        android:id="@+id/text_empty_state"
+        android:text="沒有找到相關卡片"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/chip_group_filter_tags" /&gt;
+&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
+                    </div>
+
+                    <div class="mockup-preview">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            <div style="background: #f8f9fa; border: 2px solid #667eea; border-radius: 15px; padding: 20px; margin: 10px 0; max-width: 300px; margin-left: auto; margin-right: auto;">
+                                <div style="background: #667eea; color: white; padding: 8px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;">
+                                    會議筆記
+                                </div>
+                                <div style="text-align: left; font-size: 0.9rem; color: #666; margin-bottom: 10px;">
+                                    今天的會議討論了項目進度和下一步計劃，需要重點關注用戶體驗的優化...
+                                </div>
+                                <div style="text-align: right; font-size: 0.8rem; color: #999; margin-bottom: 10px;">
+                                    2024-12-20 14:30
+                                </div>
+                                <div style="display: flex; gap: 5px; justify-content: flex-start;">
+                                    <span style="background: #667eea; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem;">#工作</span>
+                                    <span style="background: #764ba2; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem;">#會議</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 標籤管理布局 -->
+            <div class="layout-card">
+                <div class="layout-header">
+                    <i class="fas fa-tags"></i>
+                    <h2>fragment_tags.xml - 標籤管理</h2>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-description">
+                        <h3>標籤功能</h3>
+                        <ul>
+                            <li>雙視圖模式切換 (TabLayout + ViewPager2)</li>
+                            <li>標籤列表管理</li>
+                            <li>標籤雲視覺化 (FlexboxLayout)</li>
+                            <li>批量編輯操作</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-tags">
+                        <span class="tech-tag">CoordinatorLayout</span>
+                        <span class="tech-tag">TabLayout</span>
+                        <span class="tech-tag">ViewPager2</span>
+                        <span class="tech-tag">FlexboxLayout</span>
+                    </div>
+
+                    <div class="xml-structure">
+&lt;androidx.coordinatorlayout.widget.CoordinatorLayout&gt;
+    &lt;com.google.android.material.appbar.AppBarLayout&gt;
+        &lt;com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout" /&gt;
+    &lt;/com.google.android.material.appbar.AppBarLayout&gt;
+    
+    &lt;androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"&gt;
+        
+        &lt;!-- 標籤列表頁面 --&gt;
+        &lt;androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_tags"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" /&gt;
+            
+        &lt;!-- 標籤雲頁面 --&gt;
+        &lt;com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flexbox_tag_cloud"
+            app:flexWrap="wrap"
+            app:justifyContent="center" /&gt;
+            
+    &lt;/androidx.viewpager2.widget.ViewPager2&gt;
+    
+    &lt;com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_tag" /&gt;
+&lt;/androidx.coordinatorlayout.widget.CoordinatorLayout&gt;
+                    </div>
+
+                    <div class="mockup-preview">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            <div style="background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 15px; padding: 25px; margin: 10px 0; max-width: 300px; margin-left: auto; margin-right: auto; color: white;">
+                                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                                    <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                        🧠
+                                    </div>
+                                    <div style="text-align: left;">
+                                        <h3 style="margin: 0; font-size: 1.3rem;">Zettelkasten</h3>
+                                        <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">智能卡片筆記應用</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 統計頁面布局 -->
+            <div class="layout-card">
+                <div class="layout-header">
+                    <i class="fas fa-chart-bar"></i>
+                    <h2>fragment_statistics.xml - 統計分析</h2>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-description">
+                        <h3>統計功能</h3>
+                        <ul>
+                            <li>多卡片式統計布局</li>
+                            <li>可視化圖表展示</li>
+                            <li>滾動式內容瀏覽</li>
+                            <li>數據趨勢分析</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-tags">
+                        <span class="tech-tag">NestedScrollView</span>
+                        <span class="tech-tag">CardView</span>
+                        <span class="tech-tag">MPAndroidChart</span>
+                        <span class="tech-tag">LinearLayout</span>
+                    </div>
+
+                    <div class="xml-structure">
+&lt;androidx.core.widget.NestedScrollView&gt;
+    &lt;LinearLayout android:orientation="vertical"&gt;
+        &lt;!-- 總覽統計卡片 --&gt;
+        &lt;androidx.cardview.widget.CardView&gt;
+            &lt;LinearLayout android:orientation="horizontal"&gt;
+                &lt;TextView android:text="總卡片數" /&gt;
+                &lt;TextView android:id="@+id/text_total_cards" /&gt;
+            &lt;/LinearLayout&gt;
+        &lt;/androidx.cardview.widget.CardView&gt;
+        
+        &lt;!-- 寫作統計圖表 --&gt;
+        &lt;androidx.cardview.widget.CardView&gt;
+            &lt;com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart_writing_stats" /&gt;
+        &lt;/androidx.cardview.widget.CardView&gt;
+        
+        &lt;!-- 卡片統計圖表 --&gt;
+        &lt;androidx.cardview.widget.CardView&gt;
+            &lt;com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chart_card_stats" /&gt;
+        &lt;/androidx.cardview.widget.CardView&gt;
+        
+        &lt;!-- 標籤統計圖表 --&gt;
+        &lt;androidx.cardview.widget.CardView&gt;
+            &lt;com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/chart_tag_stats" /&gt;
+        &lt;/androidx.cardview.widget.CardView&gt;
+    &lt;/LinearLayout&gt;
+&lt;/androidx.core.widget.NestedScrollView&gt;
+                    </div>
+
+                    <div class="mockup-preview">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            <div style="background: #f8f9fa; border: 2px solid #667eea; border-radius: 15px; padding: 20px; margin: 10px 0; max-width: 300px; margin-left: auto; margin-right: auto;">
+                                <div style="background: #667eea; color: white; padding: 8px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;">
+                                    會議筆記
+                                </div>
+                                <div style="text-align: left; font-size: 0.9rem; color: #666; margin-bottom: 10px;">
+                                    今天的會議討論了項目進度和下一步計劃，需要重點關注用戶體驗的優化...
+                                </div>
+                                <div style="text-align: right; font-size: 0.8rem; color: #999; margin-bottom: 10px;">
+                                    2024-12-20 14:30
+                                </div>
+                                <div style="display: flex; gap: 5px; justify-content: flex-start;">
+                                    <span style="background: #667eea; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem;">#工作</span>
+                                    <span style="background: #764ba2; color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem;">#會議</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 密碼鎖定布局 -->
+            <div class="layout-card">
+                <div class="layout-header">
+                    <i class="fas fa-lock"></i>
+                    <h2>activity_password_lock.xml - 密碼鎖定</h2>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-description">
+                        <h3>安全功能</h3>
+                        <ul>
+                            <li>密碼輸入界面</li>
+                            <li>生物識別按鈕</li>
+                            <li>應用圖標展示</li>
+                            <li>錯誤提示處理</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-tags">
+                        <span class="tech-tag">ConstraintLayout</span>
+                        <span class="tech-tag">TextInputLayout</span>
+                        <span class="tech-tag">MaterialButton</span>
+                        <span class="tech-tag">ImageButton</span>
+                    </div>
+
+                    <div class="xml-structure">
+&lt;androidx.constraintlayout.widget.ConstraintLayout&gt;
+    &lt;ImageView
+        android:id="@+id/image_app_icon"
+        android:src="@drawable/ic_app_icon"
+        app:layout_constraintTop_toTopOf="parent" /&gt;
+        
+    &lt;TextView
+        android:id="@+id/text_app_title"
+        android:text="Zettelkasten"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/image_app_icon" /&gt;
+        
+    &lt;ImageView
+        android:id="@+id/image_lock_icon"
+        android:src="@drawable/ic_lock"
+        app:layout_constraintTop_toBottomOf="@id/text_app_title" /&gt;
+        
+    &lt;com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"&gt;
+        &lt;com.google.android.material.textfield.TextInputEditText
+            android:inputType="textPassword"
+            android:hint="輸入密碼" /&gt;
+    &lt;/com.google.android.material.textfield.TextInputLayout&gt;
+    
+    &lt;com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_unlock"
+        android:text="解鎖"
+        app:layout_constraintTop_toBottomOf="@id/text_input_password" /&gt;
+        
+    &lt;ImageButton
+        android:id="@+id/btn_biometric"
+        android:src="@drawable/ic_fingerprint"
+        app:layout_constraintTop_toBottomOf="@id/btn_unlock" /&gt;
+&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
+                    </div>
+
+                    <div class="mockup-preview">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                        <div class="phone-screen">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>🔋 100%</span>
+                            </div>
+                            <div class="app-content">
+                                <div style="text-align: center; color: #666; padding: 40px 20px;">
+                                    <div style="margin-bottom: 30px;">
+                                        <div style="width: 80px; height: 80px; background: #667eea; border-radius: 20px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem;">
+                                            🧠
+                                        </div>
+                                        <h2 style="color: #333; margin-bottom: 10px; font-size: 1.8rem;">Zettelkasten</h2>
+                                        <p style="color: #666; font-size: 1rem;">智能卡片筆記應用</p>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 30px;">
+                                        <div style="width: 60px; height: 60px; background: #f0f0f0; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: #666; font-size: 1.8rem; border: 3px solid #ddd;">
+                                            🔒
+                                        </div>
+                                        <p style="margin-top: 15px; color: #666; font-size: 1rem;">應用已鎖定</p>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 25px;">
+                                        <div style="border: 2px solid #667eea; border-radius: 8px; padding: 12px; background: white; text-align: left;">
+                                            <label style="color: #667eea; font-size: 0.8rem; font-weight: bold;">密碼</label><br>
+                                            <input type="password" placeholder="輸入您的密碼" style="border: none; outline: none; width: 100%; font-size: 1rem; background: transparent;" readonly>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-bottom: 20px;">
+                                        <button style="background: #667eea; color: white; border: none; padding: 12px 40px; border-radius: 25px; font-weight: bold; width: 100%; font-size: 1rem;">解鎖</button>
+                                    </div>
+                                    
+                                    <div style="text-align: center;">
+                                        <div style="width: 50px; height: 50px; background: #f8f9fa; border: 2px solid #667eea; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: #667eea; font-size: 1.5rem;">
+                                            👆
+                                        </div>
+                                        <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">或使用生物識別</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 卡片項目布局 -->
+            <div class="layout-card" id="items">
+                <div class="layout-header">
+                    <i class="fas fa-layer-group"></i>
+                    <h2>item_card.xml - 卡片項目</h2>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-description">
+                        <h3>卡片展示</h3>
+                        <ul>
+                            <li>Material卡片設計 (CardView)</li>
+                            <li>內容預覽截取</li>
+                            <li>時間戳顯示</li>
+                            <li>標籤快速瀏覽</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-tags">
+                        <span class="tech-tag">CardView</span>
+                        <span class="tech-tag">ConstraintLayout</span>
+                        <span class="tech-tag">ChipGroup</span>
+                        <span class="tech-tag">TextView</span>
+                    </div>
+
+                    <div class="xml-structure">
+&lt;androidx.cardview.widget.CardView
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"&gt;
+    
+    &lt;androidx.constraintlayout.widget.ConstraintLayout&gt;
+        &lt;TextView
+            android:id="@+id/text_card_title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" /&gt;
+            
+        &lt;TextView
+            android:id="@+id/text_card_content"
+            android:maxLines="3"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/text_card_title" /&gt;
+            
+        &lt;TextView
+            android:id="@+id/text_created_time"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/text_card_content" /&gt;
+            
+        &lt;com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_tags"
+            app:layout_constraintTop_toBottomOf="@id/text_created_time" /&gt;
+    &lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
+&lt;/androidx.cardview.widget.CardView&gt;
+                    </div>
+
+                    <div class="mockup-preview">
+                        <div class="mockup-elements">
+                            <div class="mockup-element card">
+                                <strong>會議筆記</strong><br>
+                                今天的會議討論了項目進度和下一步計劃...<br>
+                                <small>2024-12-20 14:30</small><br>
+                                <span style="background: #667eea; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">#工作</span>
+                                <span style="background: #764ba2; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">#會議</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 設置密碼對話框 -->
+            <div class="layout-card" id="dialogs">
+                <div class="layout-header">
+                    <i class="fas fa-cog"></i>
+                    <h2>dialog_set_password.xml - 設置密碼</h2>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-description">
+                        <h3>對話框功能</h3>
+                        <ul>
+                            <li>Material對話框設計</li>
+                            <li>密碼強度驗證</li>
+                            <li>實時錯誤提示</li>
+                            <li>直觀操作流程</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-tags">
+                        <span class="tech-tag">LinearLayout</span>
+                        <span class="tech-tag">TextInputLayout</span>
+                        <span class="tech-tag">MaterialButton</span>
+                        <span class="tech-tag">TextView</span>
+                    </div>
+
+                    <div class="xml-structure">
+&lt;LinearLayout
+    android:orientation="vertical"
+    android:padding="24dp"&gt;
+    
+    &lt;TextView
+        android:text="設置應用密碼"
+        android:textSize="20sp"
+        android:textStyle="bold" /&gt;
+        
+    &lt;TextView
+        android:text="為了保護您的私人筆記，請設置一個密碼"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/text_secondary" /&gt;
+        
+    &lt;com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"&gt;
+        &lt;com.google.android.material.textfield.TextInputEditText
+            android:inputType="textPassword"
+            android:hint="輸入密碼" /&gt;
+    &lt;/com.google.android.material.textfield.TextInputLayout&gt;
+    
+    &lt;com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_confirm_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"&gt;
+        &lt;com.google.android.material.textfield.TextInputEditText
+            android:inputType="textPassword"
+            android:hint="確認密碼" /&gt;
+    &lt;/com.google.android.material.textfield.TextInputLayout&gt;
+    
+    &lt;LinearLayout
+        android:orientation="horizontal"
+        android:gravity="end"&gt;
+        &lt;com.google.android.material.button.MaterialButton
+            android:text="取消"
+            style="@style/Widget.MaterialComponents.Button.TextButton" /&gt;
+        &lt;com.google.android.material.button.MaterialButton
+            android:text="確認"
+            android:layout_marginStart="8dp" /&gt;
+    &lt;/LinearLayout&gt;
+&lt;/LinearLayout&gt;
+                    </div>
+
+                    <div class="mockup-preview">
+                        <div style="text-align: center; padding: 30px; color: #666;">
+                            <div style="background: white; border: 2px solid #667eea; border-radius: 15px; padding: 25px; margin: 10px 0; max-width: 320px; margin-left: auto; margin-right: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                                <h3 style="color: #333; margin-bottom: 15px; font-size: 1.2rem;">設置應用密碼</h3>
+                                <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px; text-align: left;">為了保護您的私人筆記，請設置一個密碼</p>
+                                
+                                <div style="margin-bottom: 15px;">
+                                    <div style="border: 2px solid #667eea; border-radius: 8px; padding: 10px; background: white; text-align: left;">
+                                        <label style="color: #667eea; font-size: 0.8rem; font-weight: bold;">輸入密碼</label><br>
+                                        <input type="password" placeholder="••••••••" style="border: none; outline: none; width: 100%; font-size: 1rem; background: transparent; color: #333;" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-bottom: 20px;">
+                                    <div style="border: 2px solid #667eea; border-radius: 8px; padding: 10px; background: white; text-align: left;">
+                                        <label style="color: #667eea; font-size: 0.8rem; font-weight: bold;">確認密碼</label><br>
+                                        <input type="password" placeholder="••••••••" style="border: none; outline: none; width: 100%; font-size: 1rem; background: transparent; color: #333;" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                    <button style="background: transparent; color: #667eea; border: 1px solid #667eea; padding: 10px 20px; border-radius: 20px; font-weight: bold;">取消</button>
+                                    <button style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold;">確認</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 導航頭部布局 -->
+            <div class="layout-card" id="components">
+                <div class="layout-header">
+                    <i class="fas fa-bars"></i>
+                    <h2>nav_header.xml - 導航頭部</h2>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-description">
+                        <h3>導航功能</h3>
+                        <ul>
+                            <li>應用品牌展示</li>
+                            <li>用戶信息區域</li>
+                            <li>漸變背景設計</li>
+                            <li>個人化元素</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-tags">
+                        <span class="tech-tag">LinearLayout</span>
+                        <span class="tech-tag">ImageView</span>
+                        <span class="tech-tag">TextView</span>
+                        <span class="tech-tag">Gradient</span>
+                    </div>
+
+                    <div class="xml-structure">
+&lt;LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="176dp"
+    android:background="@drawable/nav_header_bg"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="bottom"&gt;
+    
+    &lt;ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_app_icon"
+        android:layout_marginBottom="16dp" /&gt;
+        
+    &lt;TextView
+        android:text="Zettelkasten"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" /&gt;
+        
+    &lt;TextView
+        android:text="智能卡片筆記應用"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:alpha="0.8" /&gt;
+&lt;/LinearLayout&gt;
+                    </div>
+
+                    <div class="mockup-preview">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            <div style="background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 15px; padding: 25px; margin: 10px 0; max-width: 300px; margin-left: auto; margin-right: auto; color: white;">
+                                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                                    <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                        🧠
+                                    </div>
+                                    <div style="text-align: left;">
+                                        <h3 style="margin: 0; font-size: 1.3rem;">Zettelkasten</h3>
+                                        <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">智能卡片筆記應用</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 標籤雲項目布局 -->
+            <div class="layout-card">
+                <div class="layout-header">
+                    <i class="fas fa-cloud"></i>
+                    <h2>item_tag_cloud.xml - 標籤雲項目</h2>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-description">
+                        <h3>標籤雲設計</h3>
+                        <ul>
+                            <li>動態尺寸標籤</li>
+                            <li>使用頻率視覺化</li>
+                            <li>彩色主題變化</li>
+                            <li>點擊交互效果</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-tags">
+                        <span class="tech-tag">Chip</span>
+                        <span class="tech-tag">Dynamic Sizing</span>
+                        <span class="tech-tag">Color Themes</span>
+                        <span class="tech-tag">Click Events</span>
+                    </div>
+
+                    <div class="xml-structure">
+&lt;com.google.android.material.chip.Chip
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:chipBackgroundColor="@color/chip_background_selector"
+    app:chipStrokeColor="@color/chip_stroke_color"
+    app:chipStrokeWidth="1dp"
+    app:chipCornerRadius="16dp"
+    style="@style/Widget.MaterialComponents.Chip.Action" /&gt;
+                    </div>
+
+                    <div class="mockup-preview">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            <div style="background: #f8f9fa; border: 2px solid #667eea; border-radius: 15px; padding: 20px; margin: 10px 0; max-width: 320px; margin-left: auto; margin-right: auto;">
+                                <h4 style="color: #333; margin-bottom: 15px;">標籤雲視圖</h4>
+                                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;">
+                                    <span style="background: #667eea; color: white; padding: 10px 16px; border-radius: 20px; font-size: 1.1rem; font-weight: bold;">#工作</span>
+                                    <span style="background: #764ba2; color: white; padding: 8px 14px; border-radius: 18px; font-size: 1rem;">#學習</span>
+                                    <span style="background: #28a745; color: white; padding: 6px 12px; border-radius: 16px; font-size: 0.9rem;">#筆記</span>
+                                    <span style="background: #17a2b8; color: white; padding: 8px 14px; border-radius: 18px; font-size: 1rem;">#重要</span>
+                                    <span style="background: #ffc107; color: #333; padding: 5px 10px; border-radius: 14px; font-size: 0.8rem;">#會議</span>
+                                    <span style="background: #dc3545; color: white; padding: 6px 12px; border-radius: 16px; font-size: 0.9rem;">#想法</span>
+                                </div>
+                                <p style="font-size: 0.8rem; color: #999; margin-top: 15px;">標籤大小表示使用頻率</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="back-to-top" onclick="scrollToTop()">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+    </div>
+
+    <script>
+        // 平滑滾動到頂部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 導航標籤點擊事件
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 移除所有active類
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                
+                // 添加active類到當前標籤
+                this.classList.add('active');
+                
+                // 滾動到對應區域
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 滾動時顯示/隱藏回到頂部按鈕
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        // 添加滾動動畫效果
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // 觀察所有布局卡片
+        document.querySelectorAll('.layout-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // 代碼高亮
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+    </script>
+</body>
+</html> 
