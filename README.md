@@ -244,7 +244,7 @@ android.useAndroidX=true
 
 ## 📞 聯繫方式
 
-- 📧 Email: [your-email@example.com]
+- 📧 Email: [tiger.danny@gmail.com]
 - 🐛 Bug Report: [GitHub Issues](https://github.com/your-username/zettelkasten-android/issues)
 - 💡 Feature Request: [GitHub Discussions](https://github.com/your-username/zettelkasten-android/discussions)
 

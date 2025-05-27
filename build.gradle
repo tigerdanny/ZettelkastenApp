@@ -5,7 +5,7 @@ buildscript {
         kotlin_version = '1.9.22'
         room_version = '2.6.1'
         nav_version = '2.7.6'
-        agp_version = '8.10.0'
+        agp_version = '8.2.0'
     }
     // Buildscript still needs repositories
     repositories {
