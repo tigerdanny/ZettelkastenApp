@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "GitHub MCP Server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery-ai/github"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "YOUR_GITHUB_TOKEN_HERE"
+      }
+    }
+  }
+} 
